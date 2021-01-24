@@ -1,8 +1,6 @@
 import csv
 from matplotlib import pyplot as plt
 
-#filename = 'static1.csv'
-
 def visFile(filename):
     with open(filename) as f:
         reader = csv.reader(f)
@@ -29,5 +27,3 @@ def visFile(filename):
     plt.ylabel('Sensor Read',fontsize=16)
     plt.tick_params(axis='both',which='major',labelsize=16)
     plt.show()
-
-#visFile('static2.csv')
