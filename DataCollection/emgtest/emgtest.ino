@@ -1,4 +1,4 @@
-const unsigned long READ_PERIOD = 10000;  // 10000(ms) = 1/(100Hz)
+const unsigned long READ_PERIOD = 10000;  // 10000(us) = 1/(100Hz)
 int sensorV[3]={0};
 
 int flag=0;
