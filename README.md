@@ -14,7 +14,7 @@
 
 
 
-![image](https://github.com/Diregie-J/Video-Player-Controlled-by-Action-Recognition/blob/main/IMG/rec2.jpg)
+![image](https://github.com/Diregie-J/Video-Player-Controlled-by-Action-Recognition/blob/main/IMG/rec2.png)
 
 
 
