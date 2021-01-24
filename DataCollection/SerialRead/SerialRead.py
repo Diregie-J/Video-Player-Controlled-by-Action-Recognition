@@ -4,6 +4,7 @@ import sys
 from time import sleep
 import vis
 
+# change filename, port number, and baudrate if needed
 filename = 'temp'+'33'+'.csv'
 port = "COM9"
 baudrate = 19200
