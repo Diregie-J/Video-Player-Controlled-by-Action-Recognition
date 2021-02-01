@@ -3,9 +3,18 @@ import time
 import sys
 from time import sleep
 import vis
+import os
+
+def decide_filename(motion: string) -> string:
+    i = 0
+    
+    while os.path.exists(os.path.join(motion, motion + str(i) + ".csv"):
+        i += 1
+    
+    return os.path.join(motion, motion + str(i) + ".csv")
 
 # change filename, port number, and baudrate if needed
-filename = 'temp'+'33'+'.csv'
+filename = decide_filename("fist")
 port = "COM9"
 baudrate = 19200
 
