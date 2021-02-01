@@ -6,13 +6,16 @@ import vis
 import os
 
 
-def decide_filename(action):
+def decide_filename(action: str) -> str:
     i = 0
 
-    while os.path.exists(os.path.join(action, action + str(i) + ".csv")):
+    while os.path.exists(os.path.join(os.getcwd(), action, action + str(i) + ".csv")):
         i += 1
 
-    return os.path.join(action, action + str(i) + ".csv")
+    if i == 0:
+        os.mkdir(os.path.join(os.getcwd(), action))
+
+    return os.path.join(os.getcwd(), action, action + str(i) + ".csv")
 
 
 # change filename, port number, and baudrate if needed
