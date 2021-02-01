@@ -1,10 +1,6 @@
 import csv
 import matplotlib.pyplot as plt
 
-#1. plot the raw data
-#2. extract valid segment
-#3. plot again
-
 path = "rawData/fist.csv"
 
 def knnForwardRegression(rawData, k):
