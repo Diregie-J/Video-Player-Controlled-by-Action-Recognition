@@ -34,7 +34,7 @@
 
 EMG电极位置
 
-![image](https://github.com/Diregie-J/Video-Player-Controlled-by-Action-Recognition/blob/main/IMG/channel_places.png)
+![image](https://github.com/walkeronwater/Video-Player-Controlled-by-Action-Recognition/tree/main/IMG/channel_places.png)
 
 注：1, 2, 3对应csv第一列、第二列、第三列
 
