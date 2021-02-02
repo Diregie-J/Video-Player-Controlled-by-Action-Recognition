@@ -34,16 +34,8 @@
 
 EMG电极位置
 
-![image](https://github.com/Diregie-J/Video-Player-Controlled-by-Action-Recognition/blob/main/IMG/rec1.jpg)
-
-![image](https://github.com/Diregie-J/Video-Player-Controlled-by-Action-Recognition/blob/main/IMG/rec2.png)
+![image](https://github.com/Diregie-J/Video-Player-Controlled-by-Action-Recognition/blob/main/IMG/channel places.png)
 
 注：1, 2, 3对应csv第一列、第二列、第三列
 
 
-
-![image](https://github.com/Diregie-J/Video-Player-Controlled-by-Action-Recognition/blob/main/IMG/rec_1.jpg)
-
-![image](https://github.com/Diregie-J/Video-Player-Controlled-by-Action-Recognition/blob/main/IMG/rec_2.jpg)
-
-![image](https://github.com/Diregie-J/Video-Player-Controlled-by-Action-Recognition/blob/main/IMG/rec_3.jpg)
