@@ -19,11 +19,9 @@ def decide_filename(action: str) -> str:
 
 
 # change filename, port number, and baudrate if needed
-<<<<<<< HEAD
-filename = 'temp'+'111'+'.csv'
-=======
-filename = decide_filename("fist")
->>>>>>> 1cda9d3aebe9941e9a1b07bf446df6b41cf6e7df
+
+filename = 'temp'+'.csv'
+
 port = "COM9"
 baudrate = 19200
 
@@ -38,7 +36,6 @@ ser.write("a".encode())
 
 f = open(filename, 'w')
 
-<<<<<<< HEAD
 
 ser.flushInput()
 ser.flushOutput()
@@ -69,7 +66,6 @@ while 1:
     sleep(3)
 
 # vis.visFile(filename)
-=======
 i = 0
 ser.flushInput()
 ser.flushOutput()
@@ -90,4 +86,3 @@ for i in range(300):
     # print(time2)
 
 vis.visFile(filename)
->>>>>>> 1cda9d3aebe9941e9a1b07bf446df6b41cf6e7df
