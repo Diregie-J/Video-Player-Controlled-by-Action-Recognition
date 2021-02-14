@@ -1,24 +1,24 @@
 import tensorflow as tf
+import matplotlib as plt
 from tensorflow import keras
 from tensorflow.keras import *
 from tensorflow.keras.layers import *
-tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 
 
-def cnn(layers_num, filters, kernel_size, activation):
+def cnn_(layers_num, f, k, a):
     backend.clear_session()
 
     model = Sequential()
-    model.add(Conv1D(filters=filters, kernel_size=kernel_size,
-                     activation=activation, input_shape=x_train.shape[1:]))
+    model.add(Conv1D(filters=f, kernel_size=k,
+                     activation=a, input_shape=x_train.shape[1:]))
     model.add(MaxPooling1D(pool_size=2, strides=1, padding='valid'))
 
     for _ in range(layers_num):
-        model.add(Conv1D(filters=filters,
-                         kernel_size=kernel_size, activation=activation))
+        model.add(Conv1D(filters=f,
+                         kernel_size=k, activation=a))
 
-    model.add(Conv1D(filters=filters,
-                     kernel_size=kernel_size, activation=activation))
+    model.add(Conv1D(filters=f,
+                     kernel_size=k, activation=a))
     model.add(MaxPooling1D(pool_size=2, strides=1, padding='valid'))
     model.add(Flatten())
     model.add(Dense(6, activation='softmax'))
