@@ -5,20 +5,20 @@ from tensorflow.keras import *
 from tensorflow.keras.layers import *
 
 
-def cnn_(layers_num, f, k, a):
+def cnn_(layers_num, f, ks, a):
     backend.clear_session()
 
     model = Sequential()
-    model.add(Conv1D(filters=f, kernel_size=k,
+    model.add(Conv1D(filters=f, kernel_size=ks,
                      activation=a, input_shape=x_train.shape[1:]))
     model.add(MaxPooling1D(pool_size=2, strides=1, padding='valid'))
 
     for _ in range(layers_num):
         model.add(Conv1D(filters=f,
-                         kernel_size=k, activation=a))
+                         kernel_size=ks, activation=a))
 
     model.add(Conv1D(filters=f,
-                     kernel_size=k, activation=a))
+                     kernel_size=ks, activation=a))
     model.add(MaxPooling1D(pool_size=2, strides=1, padding='valid'))
     model.add(Flatten())
     model.add(Dense(6, activation='softmax'))
