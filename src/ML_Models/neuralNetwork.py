@@ -8,12 +8,10 @@ from keras.callbacks import EarlyStopping
 import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
-from keras.models import load_model
 
 
-def nnClassifier(featureVector):
-    print(os.path.abspath('.'))
-    model = load_model('./src/ML_models/ann.h5')
+def nnClassifier(featureVector, model):
+    # print(os.path.abspath('.'))
 
     rtSample = np.array(featureVector).reshape(1,len(featureVector))
 

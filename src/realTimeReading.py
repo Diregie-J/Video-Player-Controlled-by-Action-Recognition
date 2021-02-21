@@ -2,6 +2,9 @@ import os
 import featureExtraction as feature 
 import recognitionResults as rr 
 import serial
+from keras.models import load_model
+
+model = load_model('./src/ML_models/ann.h5')
 
 jumpThreshold = 50
 winWidth = 120
