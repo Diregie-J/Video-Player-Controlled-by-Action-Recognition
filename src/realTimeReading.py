@@ -2,79 +2,15 @@ import os
 import featureExtraction as feature 
 import recognitionResults as rr 
 import serial
-from keras.models import load_model
+import tools
+import matplotlib.pyplot as plt
 
-model = load_model('./src/ML_models/ann.h5')
-
-jumpThreshold = 50
-winWidth = 120
-#k and n are used to judge whether a motion happens
-k = 30
-n = 5
+#k and n are used to detect whether a motion happens
+k = 10
+n = 10
+winWidth = 100
 
 ser = serial.Serial('/dev/cu.usbmodem1454101', 9600)
-
-#Calculate the value of a point preprocessed
-def getKnnForwardMean(dataList, index, k):
-    i = 0
-    sumK = 0.0
-    while i < k:
-        sumK = sumK + dataList[index-i]
-        i = i + 1
-        if i > index:
-            break
-    meanK = sumK/k
-    return meanK
-
-#Transform a raw list to a smoother list
-def getSmoothedList(dataList, k):
-    index = k - 1
-    smoothedList = []
-    while index < len(dataList):
-        smoothedList.append(getKnnForwardMean(dataList, index, k))
-        index = index + 1
-    return smoothedList
-
-#Get the data in buffer area smoothed
-def getSmoothedData(bufferList, k):
-    i = 0
-    channelNum = len(bufferList[0])
-    sortedBufferData = []
-    smoothedBufferData = []
-    while i < channelNum:
-        sortedBufferData.append([])
-        smoothedBufferData.append([])
-        i = i + 1
-    j = 0
-    while j < channelNum:
-        for data in bufferList:
-            sortedBufferData[j].append(data[j])
-        smoothedBufferData[j].extend(getSmoothedList(sortedBufferData[j], k))
-        j = j + 1
-    return smoothedBufferData
-
-#Judge whether recording should start
-def startReading(bufferList, k, n):
-    smoothedData = getSmoothedData(bufferList, k)
-    channelNum = len(smoothedData)
-    bufferLength = len(bufferList)
-    i = 0
-    if len(bufferList) < k+n:
-        return False
-    else:
-        while i < channelNum:
-            latestPoint = smoothedData[i][bufferLength-k]
-            previousNPointsMean = (sum(smoothedData[i])-latestPoint)/n
-            print(latestPoint - previousNPointsMean)
-            if latestPoint - previousNPointsMean >= jumpThreshold:
-                break
-            else:
-                i = i + 1
-        if i == channelNum:
-            return False
-        else:
-            return True
-
 
 if __name__ == '__main__':
     valid = False
@@ -83,6 +19,9 @@ if __name__ == '__main__':
     signalSegment = []
     bufferList = []
     recordTimesCounter = 0
+    actionModel = 0
+    resetCom = 0
+    segCounter = 0
 
     #initialize valid signal segment
     counter = 0
@@ -110,16 +49,30 @@ if __name__ == '__main__':
 
         #Judge whether to start or end reading
         if not valid:
-            if startReading(bufferList, k, n):
+            if tools.startReading(bufferList, k, n):
                 valid = True
                 recordOrNot = True
                 recordTimesCounter = 0
+            if actionModel != 0:
+                actionModel = 0
         else:
-            if recordTimesCounter > winWidth: #means reading is over
+            if recordTimesCounter >= winWidth: #means reading is over
                 #Get feature vector
                 featureVector = feature.getFeatureVector(signalSegment)
                 #Get recognition result
                 rr.printResults(featureVector)
+                #Plot signal segment
+                '''segCounter = segCounter + 1
+                if segCounter == 10:
+                        print(len(signalSegment[0]))
+                        print(len(tools.generateX(winWidth)))
+                        plt.plot(tools.generateX(winWidth), signalSegment[0], color='green', label='channel 1')
+                        plt.plot(tools.generateX(winWidth), signalSegment[1], color='red', label='channel 2')
+                        plt.plot(tools.generateX(winWidth), signalSegment[2], color='blue', label='channel 3')
+                        plt.legend()
+                        plt.xlabel('time')
+                        plt.ylabel('value')
+                        plt.show()'''
                 #Re-initialize status and signal segment
                 recordTimesCounter = 0
                 valid = False
