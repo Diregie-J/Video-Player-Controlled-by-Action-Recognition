@@ -1,12 +1,12 @@
 import os
-import featureExtraction as feature 
-import recognitionResults as rr 
+import featureExtraction as feature
+import recognitionResults as rr
 import serial
 import tools
 import matplotlib.pyplot as plt
 import csv
 
-#k and n are used to detect whether a motion happens
+# k and n are used to detect whether a motion happens
 k = 10
 n = 10
 winWidth = 100
@@ -24,34 +24,34 @@ if __name__ == '__main__':
     resetCom = 0
     segCounter = 0
 
-    #initialize valid signal segment
+    # initialize valid signal segment
     counter = 0
     while counter < numOfChannel:
         signalSegment.append([])
         counter = counter + 1
-    #print(signalSegment)
-    
-    #Real-time reading
+    # print(signalSegment)
+
+    # Real-time reading
     while True:
         data = ser.readline()
-        #bytes --> string
-        data = data.decode() 
-        #Separate strings with “ ”
-        data = data.split(" ") 
-        #string --> float
-        data = list(map(float, data)) 
+        # bytes --> string
+        data = data.decode()
+        # Separate strings with “ ”
+        data = data.split(" ")
+        # string --> float
+        data = list(map(float, data))
 
         if len(data) != 3:
             continue
 
-        #Update buffer list
+        # Update buffer list
         if len(bufferList) < k+n:
             bufferList.append(data)
         else:
             bufferList.append(data)
             del bufferList[0]
 
-        #Judge whether to start or end reading
+        # Judge whether to start or end reading
         if not valid:
             if tools.startReading(bufferList, k, n):
                 valid = True
@@ -60,12 +60,12 @@ if __name__ == '__main__':
             if actionModel != 0:
                 actionModel = 0
         else:
-            if recordTimesCounter >= winWidth: #means reading is over
-                #Get feature vector
+            if recordTimesCounter >= winWidth:  # means reading is over
+                # Get feature vector
                 featureVector = feature.getFeatureVector(signalSegment)
-                #Get recognition result
+                # Get recognition result
                 rr.printResults(featureVector)
-                #Plot signal segment
+                # Plot signal segment
                 segCounter = segCounter + 1
                 '''if segCounter == 10:
                         print(len(signalSegment[0]))
@@ -77,27 +77,26 @@ if __name__ == '__main__':
                         plt.xlabel('time')
                         plt.ylabel('value')
                         plt.show()'''
-                #Save signal segment as csv file
-                path = os.path.join(segCounter,".csv")
+                # Save signal segment as csv file
+                path = os.path.join(segCounter, ".csv")
                 with open(path, 'a') as f:
-                    csv_write = csv.writer(f)        
+                    csv_write = csv.writer(f)
                     for a in signalSegment:
                         csv_write.writerow(a)
             if valid(data):
                 print(data)
                 csv_write.writerow(data)
-                #Re-initialize status and signal segment
+                # Re-initialize status and signal segment
                 recordTimesCounter = 0
                 valid = False
                 recordOrNot = False
                 for sigList in signalSegment:
                     sigList = []
-        
-        #Read valid data from serial
+
+        # Read valid data from serial
         if recordOrNot:
             index = 0
             while index < len(signalSegment):
                 signalSegment[index].append(data[index])
                 index = index + 1
             recordTimesCounter = recordTimesCounter + 1
-                
