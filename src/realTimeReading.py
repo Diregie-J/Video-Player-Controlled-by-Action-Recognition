@@ -4,6 +4,7 @@ import recognitionResults as rr
 import serial
 import tools
 import matplotlib.pyplot as plt
+import csv
 
 #k and n are used to detect whether a motion happens
 k = 10
@@ -28,7 +29,7 @@ if __name__ == '__main__':
     while counter < numOfChannel:
         signalSegment.append([])
         counter = counter + 1
-    print(signalSegment)
+    #print(signalSegment)
     
     #Real-time reading
     while True:
@@ -39,6 +40,9 @@ if __name__ == '__main__':
         data = data.split(" ") 
         #string --> float
         data = list(map(float, data)) 
+
+        if len(data) != 3:
+            continue
 
         #Update buffer list
         if len(bufferList) < k+n:
@@ -62,8 +66,8 @@ if __name__ == '__main__':
                 #Get recognition result
                 rr.printResults(featureVector)
                 #Plot signal segment
-                '''segCounter = segCounter + 1
-                if segCounter == 10:
+                segCounter = segCounter + 1
+                '''if segCounter == 10:
                         print(len(signalSegment[0]))
                         print(len(tools.generateX(winWidth)))
                         plt.plot(tools.generateX(winWidth), signalSegment[0], color='green', label='channel 1')
@@ -73,6 +77,15 @@ if __name__ == '__main__':
                         plt.xlabel('time')
                         plt.ylabel('value')
                         plt.show()'''
+                #Save signal segment as csv file
+                path = os.path.join(segCounter,".csv")
+                with open(path, 'a') as f:
+                    csv_write = csv.writer(f)        
+                    for a in signalSegment:
+                        csv_write.writerow(a)
+            if valid(data):
+                print(data)
+                csv_write.writerow(data)
                 #Re-initialize status and signal segment
                 recordTimesCounter = 0
                 valid = False
