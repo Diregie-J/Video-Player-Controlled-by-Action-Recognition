@@ -26,7 +26,7 @@ def getSmoothedList(dataList, k):
 #Get the data in buffer area smoothed
 def getSmoothedData(bufferList, k):
     i = 0
-    channelNum = len(bufferList[0])
+    channelNum = len(bufferList[len(bufferList) - 1])
     sortedBufferData = []
     smoothedBufferData = []
     while i < channelNum:
