@@ -7,14 +7,11 @@ valueLimit = 250
 def getKnnForwardMean(dataList, index, k):
     i = 0
     sumK = 0.0
-    if index < k-1:
-        sumK = dataList[index]
-    else:
-        while i < k:
-            sumK = sumK + dataList[index-i]
-            i = i + 1
-            if i > index:
-                break
+    while i < k:
+        sumK = sumK + dataList[index-i]
+        i = i + 1
+        if i > index:
+            break
     meanK = sumK/k
     return meanK
 
