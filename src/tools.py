@@ -1,6 +1,7 @@
 import os
 
 jumpThreshold = 16
+valueLimit = 250
 
 #Calculate the value of a point preprocessed
 def getKnnForwardMean(dataList, index, k):
@@ -26,7 +27,7 @@ def getSmoothedList(dataList, k):
 #Get the data in buffer area smoothed
 def getSmoothedData(bufferList, k):
     i = 0
-    channelNum = len(bufferList[len(bufferList) - 1])
+    channelNum = len(bufferList[0])
     sortedBufferData = []
     smoothedBufferData = []
     while i < channelNum:
@@ -53,7 +54,7 @@ def startReading(bufferList, k, n):
         while i < channelNum:
             latestPoint = smoothedData[i][bufferLength-k]
             previousNPointsMean = (sum(smoothedData[i])-latestPoint)/n
-            if latestPoint - previousNPointsMean >= jumpThreshold:
+            if latestPoint - previousNPointsMean >= jumpThreshold and latestPoint < valueLimit:
                 break
             else:
                 i = i + 1
