@@ -16,11 +16,12 @@ def nnClassifier(featureVector, model):
     rtSample = np.array(featureVector).reshape(1, len(featureVector))
 
     predictResult = model.predict(rtSample)
+    print(predictResult)
     for i in range(predictResult.shape[1]):
         if(predictResult[0][i] == 1):
             return int(i)
         else:
-            return 0
+            return np.argmax(predictResult)
 
 
 def cnnClassifier(raw_signal, model):
