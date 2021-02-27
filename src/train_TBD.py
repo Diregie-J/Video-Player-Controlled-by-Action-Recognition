@@ -45,9 +45,8 @@ for filePathListIndex in filePathList:
 
 # windowing
 record_length=300
-window_length=120
-window_slice=[50]
-# window_slice = [m for m in range(10,51,1)]
+window_length=100
+window_slice = [m for m in range(10,31,5)]
 
 
 emg_1_window={'d': {} , 'u': {}, 'l': {}, 'r': {}, 'f': {}}
@@ -79,15 +78,10 @@ for actionIndex in range(len(actionList)):
 
             # if max_1>window_slice[window_slice_index] and max_1<record_length-window_slice[window_slice_index] and max_2>window_slice[window_slice_index] and max_2<record_length-window_slice[window_slice_index] and max_3>window_slice[window_slice_index] and max_3<record_length-window_slice[window_slice_index]:
             if avgMax>window_slice[window_slice_index] and avgMax<record_length-window_length+window_slice[window_slice_index]:
-                sigSegment[0]=[]
-                sigSegment[1]=[]
-                sigSegment[2]=[]
-                emg_1_window[actionList[actionIndex]][generatedIndex] = emg_1_slice[i][avgMax-window_slice[window_slice_index]:avgMax+(window_length-window_slice[window_slice_index])]
-                emg_2_window[actionList[actionIndex]][generatedIndex] = emg_2_slice[i][avgMax-window_slice[window_slice_index]:avgMax+(window_length-window_slice[window_slice_index])]
-                emg_3_window[actionList[actionIndex]][generatedIndex] = emg_3_slice[i][avgMax-window_slice[window_slice_index]:avgMax+(window_length-window_slice[window_slice_index])]
-                sigSegment[0]=emg_1_window[actionList[actionIndex]][generatedIndex]
-                sigSegment[1]=emg_2_window[actionList[actionIndex]][generatedIndex]
-                sigSegment[2]=emg_3_window[actionList[actionIndex]][generatedIndex]
+                sigSegment=[[],[],[]]
+                sigSegment[0] = emg_1_slice[i][avgMax-window_slice[window_slice_index]:avgMax+(window_length-window_slice[window_slice_index])]
+                sigSegment[1] = emg_2_slice[i][avgMax-window_slice[window_slice_index]:avgMax+(window_length-window_slice[window_slice_index])]
+                sigSegment[2] = emg_3_slice[i][avgMax-window_slice[window_slice_index]:avgMax+(window_length-window_slice[window_slice_index])]
                 sigList.append(sigSegment)
                 sigLabel.append(labelSwitch(actionList[actionIndex]))
                 generatedIndex+=1
@@ -112,7 +106,7 @@ for i in range(len(sigList)):
     featureMatrix.append(feature)
 
 featureMatrix = np.array(featureMatrix)
-# print(featureMatrix[900])
+print(featureMatrix.shape)
 labelMatrix = np.array(sigLabel).reshape(len(sigLabel),1)
 print(labelMatrix.shape)
 
@@ -160,8 +154,8 @@ model.compile(loss='categorical_crossentropy',
               optimizer='adam',
               metrics=['accuracy'])
 
-early_stop = EarlyStopping(monitor='val_accuracy', min_delta=0, patience=100, verbose=0, mode='max', baseline=None, restore_best_weights=True)
-history=model.fit(x_train, y_train_class, epochs=10, batch_size=100, verbose=1, validation_data=(x_validate, y_validate_class), callbacks=[early_stop])
+early_stop = EarlyStopping(monitor='val_accuracy', min_delta=0, patience=10, verbose=0, mode='max', baseline=None, restore_best_weights=True)
+history=model.fit(x_train, y_train_class, epochs=100, batch_size=100, verbose=1, validation_data=(x_validate, y_validate_class), callbacks=[early_stop])
 plt.plot(history.history['loss'])
 plt.plot(history.history['val_loss'])
 plt.title('Model loss')
