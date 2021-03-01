@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import time
 from keras.models import load_model
 import csv
-from tools import getSmoothedList, knnForwardRegression
+from tools import getSmoothedList
 
 model = load_model('./src/ML_models/test2.h5')
 port = "COM9"
@@ -19,19 +19,22 @@ if __name__ == '__main__':
     smoothSig=[]
     valid = False
     recordOrNot = False
+    noteBuffer=True
+    isLog=True
     
-    winWidth=100
+    winWidth=300
     dynamic = 10
     dynamicThreshold = 5
     baseMean_ch1=0
     baseMean_ch2=0
     baseMean_ch3=0
-    bufferSize = 300
+    bufferSize = 100
     bufferList = []
     signalSegment = [[],[],[]]
     
 
     counter = 0
+    segCounter=0
 
     ser.flushInput()
     ser.flushOutput()
@@ -72,6 +75,9 @@ if __name__ == '__main__':
             del bufferList[0]
         
         if len(bufferList) == bufferSize:
+            if noteBuffer:
+                print('开始做动作')
+                noteBuffer=False
             if not valid:
                 for i in range(bufferSize):
                     baseMean_ch1 += bufferList[i][0]
@@ -95,12 +101,26 @@ if __name__ == '__main__':
                 dynamicMean_ch3 = dynamicMean_ch3/dynamic
                 if dynamicMean_ch1 > baseMean_ch1 and dynamicMean_ch2 > baseMean_ch2 and dynamicMean_ch3 > baseMean_ch3:
                     counter+=1
+                    print('放松')
                     print(counter)
                     recordTimesCounter = 0
                     valid = True
             else:
                 if recordTimesCounter == winWidth:
-                    
+                    if isLog:
+                        # Change file name here:
+                        path = os.path.join(os.getcwd(),'u'+str(segCounter)+".csv")
+                        f = open(path, 'w')
+                        for i in range(len(signalSegment[2])):
+                            f.write(str(signalSegment[0][i]))
+                            f.write(',')
+                            f.write(str(signalSegment[1][i]))
+                            f.write(',')
+                            f.write(str(signalSegment[2][i]))
+                            f.write('\n')
+                            f.close()
+                            f = open(path, 'a')
+                        segCounter+=1
                     # plt.plot(signalSegment[0], color='blue', label='channel 1')
                     # plt.plot(signalSegment[1], color='orange', label='channel 2')
                     # plt.plot(signalSegment[2], color='green', label='channel 3')
@@ -108,15 +128,17 @@ if __name__ == '__main__':
                     # plt.xlabel('time')
                     # plt.ylabel('value')
                     # plt.show()
-                    featureVector = feature.getFeatureVector(signalSegment)
-                    rr.printResults(featureVector, model)
+                    else:
+                        featureVector = feature.getFeatureVector(signalSegment)
+                        rr.printResults(featureVector, model)
 
-                    time.sleep(1)
+                    # time.sleep(1)
                     valid = False
                     recordTimesCounter = 0
                     signalSegment=[[],[],[]]
+                    bufferList=[]
+                    noteBuffer=True
                     
-
 
         elif len(bufferList) > bufferSize:
             print('Buffer overflow')
@@ -127,3 +149,4 @@ if __name__ == '__main__':
                 signalSegment[i].append(data[i])
             recordTimesCounter+=1
 
+    

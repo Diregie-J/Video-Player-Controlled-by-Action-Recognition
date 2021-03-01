@@ -13,15 +13,19 @@ import tensorflow as tf
 def nnClassifier(featureVector, model):
     # print(os.path.abspath('.'))
 
-    rtSample = np.array(featureVector).reshape(1, len(featureVector))
+    rtSample = np.array(featureVector).reshape(1,len(featureVector))
+
 
     predictResult = model.predict(rtSample)
     print(predictResult)
-    for i in range(predictResult.shape[1]):
-        if(predictResult[0][i] == 1):
-            return int(i)
-        else:
-            return np.argmax(predictResult)
+    # for i in range(predictResult.shape[1]):
+        # print(predictResult[0][i])
+        # if(predictResult[0][i] >= 0.8):
+        #     return int(i)
+        
+            
+    return int(np.argmax(predictResult))
+
 
 
 def cnnClassifier(raw_signal, model):

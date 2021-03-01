@@ -10,9 +10,9 @@ def visFile(filename):
         channel_3 = []
 
         for row in reader:
-            ch_1 = int(row[0])
-            ch_2 = int(row[1])
-            ch_3 = int(row[2])
+            ch_1 = int(float(row[0]))
+            ch_2 = int(float(row[1]))
+            ch_3 = int(float(row[2]))
             channel_1.append(ch_1)
             channel_2.append(ch_2)
             channel_3.append(ch_3)
@@ -27,3 +27,10 @@ def visFile(filename):
     plt.ylabel('Sensor Read',fontsize=16)
     plt.tick_params(axis='both',which='major',labelsize=16)
     plt.show()
+
+
+if __name__ == "__main__":
+    movement=['d','u','l','r','f']
+    for index in movement:
+        for i in range(2):
+            visFile(index+str(i)+'.csv')
