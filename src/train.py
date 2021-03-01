@@ -14,7 +14,7 @@ from keras.models import load_model
 import recognitionResults as rr
 
 # model = load_model('./src/ML_models/test2.h5')
-folderPath = os.path.abspath('./src/Dataset/rt')
+folderPath = os.path.abspath('./src/Dataset/newFromRealTime/hyqData')
 filePathList=[]
 data=[]
 filePathList.append(glob.glob(os.path.join(folderPath, "*.csv")))
@@ -22,7 +22,7 @@ csvData={'d': [] , 'u': [], 'l': [], 'r': [], 'f': []}
 for filePathListIndex in filePathList:
     for f in filePathListIndex:
         data = pd.read_csv(f, header=None).values.tolist() # csv file -> data list (100) of list (3)
-        if len(data) !=100:
+        if len(data) !=300:
             print('Inconsistent length -- check sample length')
 
         sigSegment=[[],[],[]]
@@ -30,9 +30,9 @@ for filePathListIndex in filePathList:
             sigSegment[0].append(data[i][0])
             sigSegment[1].append(data[i][1])
             sigSegment[2].append(data[i][2])
-
-        # f[93] -- filename
-        csvData[f[93]].append(sigSegment)
+        # print(f[114])
+        # f[114] -- filename
+        csvData[f[114]].append(sigSegment)
         featureVector = getFeatureVector(sigSegment)
 
 
@@ -97,8 +97,12 @@ model.compile(loss='categorical_crossentropy',
               optimizer='adam',
               metrics=['accuracy'])
 
-early_stop = EarlyStopping(monitor='val_accuracy', min_delta=0, patience=10, verbose=0, mode='max', baseline=None, restore_best_weights=True)
+early_stop = EarlyStopping(monitor='val_accuracy', min_delta=0, patience=5, verbose=0, mode='max', baseline=None, restore_best_weights=True)
 history=model.fit(x_train, y_train_class, epochs=100, batch_size=100, verbose=1, validation_data=(x_validate, y_validate_class), callbacks=[early_stop])
+score = model.evaluate(x_test, y_test_class, verbose=0)
+print('Test loss:', score[0])
+print('Test accuracy:', score[1])
+
 plt.plot(history.history['loss'])
 plt.plot(history.history['val_loss'])
 plt.title('Model loss')
@@ -116,9 +120,6 @@ plt.xlabel('Epoch')
 plt.legend(['Train', 'Valid'], loc='upper left')
 plt.show()
 
-score = model.evaluate(x_test, y_test_class, verbose=0)
-print('Test loss:', score[0])
-print('Test accuracy:', score[1])
 
 
-# model.save('test2.h5')
+model.save('test2.h5')

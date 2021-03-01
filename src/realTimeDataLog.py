@@ -20,9 +20,9 @@ if __name__ == '__main__':
     valid = False
     recordOrNot = False
     noteBuffer=True
-    isLog=True
+    isLog=False
     
-    winWidth=300
+    winWidth=100
     dynamic = 10
     dynamicThreshold = 5
     baseMean_ch1=0
@@ -109,7 +109,7 @@ if __name__ == '__main__':
                 if recordTimesCounter == winWidth:
                     if isLog:
                         # Change file name here:
-                        path = os.path.join(os.getcwd(),'u'+str(segCounter)+".csv")
+                        path = os.path.join(os.getcwd(),'f'+str(segCounter)+".csv")
                         f = open(path, 'w')
                         for i in range(len(signalSegment[2])):
                             f.write(str(signalSegment[0][i]))

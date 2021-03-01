@@ -30,7 +30,8 @@ def visFile(filename):
 
 
 if __name__ == "__main__":
-    movement=['d','u','l','r','f']
+    # movement=['d','u','l','r','f']
+    movement=['f']
     for index in movement:
-        for i in range(2):
+        for i in range(65,74):
             visFile(index+str(i)+'.csv')
