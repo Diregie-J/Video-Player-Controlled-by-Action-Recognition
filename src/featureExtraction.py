@@ -1,4 +1,6 @@
 import os
+import glob
+import pandas as pd
 import numpy as np
 import math
 from scipy import signal
@@ -6,6 +8,17 @@ from scipy.fft import fft, ifft, fftfreq
 
 
 #This file is to calculate the feature matrix of a 3-channel signal segment. 
+
+def prep_highpass(sig):
+    b, a = signal.butter(3, 3/50, 'highpass')
+    w, h = signal.freqs(b,a)
+    # plt.semilogx(w, 20 * np.log10(abs(h)))
+
+    filtered = signal.filtfilt(b,a,sig)
+    
+    # fft_filtered = fft(filtered)
+    # plt.plot(abs(fft_filtered))
+    return filtered
 
 def getFeatureVector(signalSeg):
     featureVector = []
@@ -62,3 +75,33 @@ def getFeatureVector(signalSeg):
         featuresForOneChannel.extend(frequentDomainFeature)
         featureVector.extend(featuresForOneChannel)
     return featureVector
+
+
+if __name__ == "__main__":
+    emg_1_csv={'d': [] , 'u': [], 'l': [], 'r': [], 'f': []}
+    emg_2_csv={'d': [] , 'u': [], 'l': [], 'r': [], 'f': []}
+    emg_3_csv={'d': [] , 'u': [], 'l': [], 'r': [], 'f': []}
+    actionList = ['d', 'u', 'l', 'r', 'f']
+
+    folderPath_hyq = os.path.abspath('./src/Dataset/new/hyqData/testOnly')
+    filePathList=[]
+    filePathList.append(glob.glob(os.path.join(folderPath_hyq, "*.csv")))
+
+    for filePathListIndex in filePathList:
+        csvData={'d': [] , 'u': [], 'l': [], 'r': [], 'f': []}
+        dl=[]
+        for f in filePathListIndex:
+            csvData[f[-5]] = pd.read_csv(f, header=None).values.tolist()
+    for actionIndex in actionList:
+        for row in range(len(csvData[actionIndex])):
+            emg_1_csv[actionIndex].append(csvData[actionIndex][row][0])
+            emg_2_csv[actionIndex].append(csvData[actionIndex][row][1])
+            emg_3_csv[actionIndex].append(csvData[actionIndex][row][2])
+
+    # print(len(emg_1_csv['f']))
+    for i in range(0,3):
+        sig=[[],[],[]]
+        sig[0]=(emg_1_csv['f'][(i-1)*300+50:(i-1)*300+150])
+        sig[1]=(emg_2_csv['f'][(i-1)*300+50:(i-1)*300+150])
+        sig[2]=(emg_3_csv['f'][(i-1)*300+50:(i-1)*300+150])
+        print(getFeatureVector(sig))

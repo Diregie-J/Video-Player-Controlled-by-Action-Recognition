@@ -65,24 +65,4 @@ while 1:
     print("Relax")
     sleep(3)
 
-# vis.visFile(filename)
-i = 0
-ser.flushInput()
-ser.flushOutput()
-for i in range(300):
-    # time1 = time.time()
-    f.write(str(ser.readline().strip().decode('utf-8')))
-    f.write(',')
-    f.write(str(ser.readline().strip().decode('utf-8')))
-    f.write(',')
-    f.write(str(ser.readline().strip().decode('utf-8')))
-    f.write(',')
-    f.write('0')  # label
-    f.write('\n')
-
-    f.close()
-    f = open(filename, 'a')
-    # time2=time.time()-time1
-    # print(time2)
-
 vis.visFile(filename)

@@ -72,3 +72,13 @@ def generateX(n):
         i = i + 1
     x = list(x)
     return x
+
+def labelSwitch(arg):
+    switcher = {
+        'd': 1,
+        'u': 2,
+        'l': 3,
+        'r': 4,
+        'f': 5
+    }
+    return switcher[arg]
