@@ -18,22 +18,24 @@ def decide_filename(action: str) -> str:
     return os.path.join(os.getcwd(), action, action + str(i) + ".csv")
 
 # change filename, port number, and baudrate if needed
-filename = 'temp'+'.csv'
+print(os.path.abspath('.'))
+filename = './src/'+'temp'+'.csv'
 port = "COM9"
 baudrate = 19200
 ser = serial.Serial(port, baudrate)
 ser.set_buffer_size(rx_size=2147483647, tx_size=2147483647)
 
-sleep(2)
 # ser.write("a".encode())
 f = open(filename, 'w')
+print('5秒后开始记录数据，看到start后开始做动作')
+sleep(3)
 ser.flushInput()
 ser.flushOutput()
 sleep(2)
 print('Start:')
 try:
-    
-    while 1:
+    recordCount=0
+    for recordCount in range(10000):
         data = ser.readline()
         #bytes --> string
         data = data.decode() 
@@ -63,6 +65,6 @@ try:
 
         # print("Relax")
         # sleep(3)
-
+    vis.visFile(filename)
 except KeyboardInterrupt:
     vis.visFile(filename)

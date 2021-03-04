@@ -10,9 +10,11 @@ def visFile(filename):
         channel_3 = []
 
         for row in reader:
-            ch_1 = int(float(row[0]))
-            ch_2 = int(float(row[1]))
-            ch_3 = int(float(row[2]))
+            if len(row) != 3:
+                break
+            ch_1 = float(row[0])
+            ch_2 = float(row[1])
+            ch_3 = float(row[2])
             channel_1.append(ch_1)
             channel_2.append(ch_2)
             channel_3.append(ch_3)
@@ -31,7 +33,8 @@ def visFile(filename):
 
 if __name__ == "__main__":
     # movement=['d','u','l','r','f']
-    movement=['f']
-    for index in movement:
-        for i in range(65,74):
-            visFile(index+str(i)+'.csv')
+    # movement=['fist']
+    # for index in movement:
+    #     for i in range(0,1):
+    #         visFile(index+str(i)+'.csv')
+    visFile('./src/temp.csv')
