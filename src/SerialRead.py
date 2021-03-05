@@ -1,3 +1,7 @@
+'''记录实时数据并放入csv
+arduino code使用./src/arduino/real-time/realtime.ino'''
+
+
 import serial
 import time
 import sys

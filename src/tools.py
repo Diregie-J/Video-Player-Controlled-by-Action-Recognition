@@ -42,6 +42,22 @@ def getSmoothedData(bufferList, k):
         j = j + 1
     return smoothedBufferData
 
+def knnForwardRegression(rawData, k):
+    index = 0
+    smoothData = []
+    while index < len(rawData):
+        sum = 0.0
+        count = 0
+        if index < k:
+            smoothData.append(float(rawData[index]))
+        else:
+            while count < k:
+                sum = sum + float(rawData[index - count])
+                count = count + 1
+            smoothData.append(sum/k)
+        index = index + 1
+    return smoothData
+
 #Judge whether recording should start
 def startReading(bufferList, k, n):
     smoothedData = getSmoothedData(bufferList, k)

@@ -1,3 +1,5 @@
+'''记录完数据放入"fileName".csv后放进这里划出实时读到的数据'''
+
 import os
 import featureExtraction as feature 
 import recognitionResults as rr 

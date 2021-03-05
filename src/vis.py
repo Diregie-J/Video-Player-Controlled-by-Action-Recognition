@@ -1,3 +1,5 @@
+'''预览csv波形'''
+
 import csv
 from matplotlib import pyplot as plt
 
