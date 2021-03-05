@@ -27,6 +27,9 @@ void loop() {
     
     if(flag==1){
       lastRead += READ_PERIOD;
+//      sensorV[0] = random(1000);
+//      sensorV[1] = random(1000);
+//      sensorV[2] = random(1000);
       sensorV[0] = analogRead(A0);
       sensorV[1] = analogRead(A1);
       sensorV[2] = analogRead(A2);
