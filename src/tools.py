@@ -1,6 +1,6 @@
 import os
 
-jumpThreshold = 16
+jumpThreshold = 50
 valueLimit = 250
 
 #Calculate the value of a point preprocessed
