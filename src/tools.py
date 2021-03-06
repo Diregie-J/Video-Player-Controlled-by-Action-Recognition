@@ -91,10 +91,10 @@ def generateX(n):
 
 def labelSwitch(arg):
     switcher = {
-        'd': 1,
-        'u': 2,
-        'l': 3,
-        'r': 4,
-        'f': 5
+        'lr': 0,
+        'rr': 1,
+        'lw': 2,
+        'rw': 3,
+        'fi': 4
     }
     return switcher[arg]

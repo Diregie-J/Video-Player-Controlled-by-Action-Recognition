@@ -1,7 +1,7 @@
 import os
 from ML_Models import neuralNetwork as nn 
 
-motionList = ['no motion', 'down', 'up', 'left', 'right', 'fist']
+motionList = ['left rotate', 'right rotate', 'left wave', 'right wave', 'fist']
 
 def printResults(featureVector, model):
     motionIndex = nn.nnClassifier(featureVector, model)

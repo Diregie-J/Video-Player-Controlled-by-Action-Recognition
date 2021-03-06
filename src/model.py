@@ -14,8 +14,6 @@ def model_ann(xShape):
     model = Sequential()
     model.add(Dense(128, activation='relu', kernel_initializer='he_normal', input_shape=xShape))
     model.add(BatchNormalization())
-    model.add(Dense(100, activation='relu', kernel_initializer='he_normal'))
-    model.add(BatchNormalization())
-    model.add(Dense(6, activation='softmax'))
+    model.add(Dense(5, activation='softmax'))
 
     return model

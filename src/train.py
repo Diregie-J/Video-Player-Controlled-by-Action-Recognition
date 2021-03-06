@@ -4,6 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import math
 import numpy as np
+from pathlib import Path
 from scipy import signal
 from scipy.fft import fft, ifft, fftfreq, fftshift
 import random
@@ -14,41 +15,40 @@ from keras.models import load_model
 import recognitionResults as rr
 
 # model = load_model('./src/ML_models/test2.h5')
-folderPath = os.path.abspath('./src/Dataset/newFromRealTime/hyqData')
+folderPath = os.path.abspath('./src/DataSet/newFromRealTime/hyqData/')
 filePathList=[]
 data=[]
-filePathList.append(glob.glob(os.path.join(folderPath, "*.csv")))
-csvData={'d': [] , 'u': [], 'l': [], 'r': [], 'f': []}
+filePathList.append(glob.glob(os.path.join(folderPath, "*_log.csv")))
+csvData={'lr': [] , 'rr': [], 'lw': [], 'rw': [], 'fi': []}
+recordLength=150
 for filePathListIndex in filePathList:
     for f in filePathListIndex:
+        fileName = Path(f).stem
+        print(fileName)
         data = pd.read_csv(f, header=None).values.tolist() # csv file -> data list (100) of list (3)
-        if len(data) !=300:
-            print('Inconsistent length -- check sample length')
+        print(len(data))
+        for i in range(0,len(data),recordLength):
+            sigSegment=[[],[],[]]
+            for j in range(recordLength):
+                sigSegment[0].append(data[j][0])
+                sigSegment[1].append(data[j][1])
+                sigSegment[2].append(data[j][2])
+            csvData[fileName[0:2]].append(sigSegment)
 
-        sigSegment=[[],[],[]]
-        for i in range(len(data)):
-            sigSegment[0].append(data[i][0])
-            sigSegment[1].append(data[i][1])
-            sigSegment[2].append(data[i][2])
-        # print(f[114])
-        # f[114] -- filename
-        csvData[f[114]].append(sigSegment)
-        featureVector = getFeatureVector(sigSegment)
+print(csvData.keys())
+print(len(csvData['fi']))
 
+# 划窗
 
-
-        # print(getFeatureVector(sigSegment))
-
-
-        # rr.printResults(featureVector, model)
 featureMatrix=[]
 labelMatrix=[]
-for keyname in csvData.keys():
-    for row in range(len(csvData[keyname])):
-        featureVector=getFeatureVector(csvData[keyname][row])
-        featureMatrix.append(featureVector)
-        labelMatrix.append(labelSwitch(keyname))
-
+for index in csvData.keys():
+    if True:#index !='lr' or index !='rr':
+        for i in range(0,len(csvData[index])):
+            featureVector = getFeatureVector(csvData[index][i])
+            # print(len(featureVector))
+            featureMatrix.append(featureVector)
+            labelMatrix.append(labelSwitch(index))
 featureMatrix = np.array(featureMatrix)
 print(featureMatrix.shape)
 labelMatrix = np.array(labelMatrix).reshape(len(labelMatrix),1)
@@ -97,7 +97,7 @@ model.compile(loss='categorical_crossentropy',
               optimizer='adam',
               metrics=['accuracy'])
 
-early_stop = EarlyStopping(monitor='val_accuracy', min_delta=0, patience=5, verbose=0, mode='max', baseline=None, restore_best_weights=True)
+early_stop = EarlyStopping(monitor='val_accuracy', min_delta=0, patience=15, verbose=0, mode='max', baseline=None, restore_best_weights=True)
 history=model.fit(x_train, y_train_class, epochs=100, batch_size=100, verbose=1, validation_data=(x_validate, y_validate_class), callbacks=[early_stop])
 score = model.evaluate(x_test, y_test_class, verbose=0)
 print('Test loss:', score[0])
@@ -122,4 +122,4 @@ plt.show()
 
 
 
-model.save('test2.h5')
+model.save('test3.h5')
