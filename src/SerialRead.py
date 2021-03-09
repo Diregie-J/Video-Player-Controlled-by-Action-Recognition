@@ -10,6 +10,7 @@ import vis
 import os
 import signal
 
+
 def decide_filename(action: str) -> str:
     i = 0
 
@@ -21,13 +22,14 @@ def decide_filename(action: str) -> str:
 
     return os.path.join(os.getcwd(), action, action + str(i) + ".csv")
 
+
 # change filename, port number, and baudrate if needed
 print(os.path.abspath('.'))
-filename = './src/'+'rrTrial6'+'.csv'
-port = "COM9"
+filename = './src/Dataset/newFromRealTime/'+'rw'+'.csv'
+port = "/dev/cu.usbmodem14401"
 baudrate = 19200
 ser = serial.Serial(port, baudrate)
-ser.set_buffer_size(rx_size=2147483647, tx_size=2147483647)
+# ser.set_buffer_size(rx_size=2147483647, tx_size=2147483647)
 
 # ser.write("a".encode())
 f = open(filename, 'w')
@@ -38,14 +40,14 @@ ser.flushOutput()
 sleep(2)
 print('Start:')
 try:
-    recordCount=0
+    recordCount = 0
     for recordCount in range(10000):
         data = ser.readline()
-        #bytes --> string
-        data = data.decode() 
-        #Separate strings with “ ”
-        data = data.split(" ") 
-        #string --> float
+        # bytes --> string
+        data = data.decode()
+        # Separate strings with “ ”
+        data = data.split(" ")
+        # string --> float
         data = list(map(float, data))
 
         if len(data) != 3:
@@ -60,7 +62,6 @@ try:
         f.write(',')
         f.write(str(data[2]))
         f.write('\n')
-
 
         # f.close()
         # f = open(filename, 'a')
