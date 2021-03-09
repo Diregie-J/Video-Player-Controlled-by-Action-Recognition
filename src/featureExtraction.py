@@ -68,6 +68,10 @@ def getFeatureVector(signalSeg):
         medianFreq = freq_temp[np.argsort(psd_temp)[len(psd_temp)//2]]
         meanPower = denominatorValue_temp/len(freq_temp)
         vcf = sm2_temp/denominatorValue_temp - np.square(nominatorValue_temp/denominatorValue_temp)
+        if denominatorValue_temp==0:
+            print('divide by zero problem -- causing meanFreq and vcf invalid -- ignored')
+            meanFreq=0
+            vcf=0
 
         timeDomainFeature = [mav, wl, ssc, rms]
         frequentDomainFeature = [meanPower]
