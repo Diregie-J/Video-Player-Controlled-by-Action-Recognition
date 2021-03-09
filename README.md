@@ -22,11 +22,11 @@
 
 | 动作 | Label |
 | ---- | ----- |
-| 左滑 | 1     |
-| 右滑 | 2     |
-| 上滑 | 3     |
-| 下滑 | 4     |
-| 握拳 | 5     |
+| d    | 0     |
+| u    | 1     |
+| l    | 2     |
+| r    | 3     |
+| f    | 4     |
 
 <br/>
 
@@ -38,4 +38,24 @@ EMG电极位置
 
 注：1, 2, 3对应csv第一列、第二列、第三列
 
-![image](https://github.com/Diregie-J/Video-Player-Controlled-by-Action-Recognition/blob/main/IMG/Capture.PNG)
+![image](https://github.com/Diregie-J/Video-Player-Controlled-by-Action-Recognition/blob/main/IMG/2021-03-01.png)
+
+![image](https://github.com/Diregie-J/Video-Player-Controlled-by-Action-Recognition/blob/main/IMG/2021-03-01%20.png)
+
+![image](https://github.com/Diregie-J/Video-Player-Controlled-by-Action-Recognition/blob/main/IMG/2021-03-01%20(1).png)
+
+![image](https://github.com/Diregie-J/Video-Player-Controlled-by-Action-Recognition/blob/main/IMG/2021-03-01%20(2).png)
+
+![image](https://github.com/Diregie-J/Video-Player-Controlled-by-Action-Recognition/blob/main/IMG/2021-03-01%20(3).png)
+
+![image](https://github.com/Diregie-J/Video-Player-Controlled-by-Action-Recognition/blob/main/IMG/2021-03-01%20(4).png)
+
+![image](https://github.com/Diregie-J/Video-Player-Controlled-by-Action-Recognition/blob/main/IMG/2021-03-01%20(5).png)
+
+![image](https://github.com/Diregie-J/Video-Player-Controlled-by-Action-Recognition/blob/main/IMG/2021-03-01%20(6).png)
+
+![image](https://github.com/Diregie-J/Video-Player-Controlled-by-Action-Recognition/blob/main/IMG/2021-03-01%20(7).png)
+
+![image](https://github.com/Diregie-J/Video-Player-Controlled-by-Action-Recognition/blob/main/IMG/2021-03-01%20(8).png)
+
+![image](https://github.com/Diregie-J/Video-Player-Controlled-by-Action-Recognition/blob/main/IMG/2021-03-01%20(9).png)
