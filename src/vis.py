@@ -2,6 +2,7 @@
 
 import csv
 from matplotlib import pyplot as plt
+import numpy as np
 
 def visFile(filename):
     with open(filename) as f:
@@ -30,7 +31,8 @@ def visFile(filename):
     plt.xlabel('Samples',fontsize=24)
     plt.ylabel('Sensor Read',fontsize=16)
     plt.tick_params(axis='both',which='major',labelsize=16)
-    plt.show()
+    # plt.imsave(filename[0:-4]+'.jpg',np.array(fig))
+
 
 
 if __name__ == "__main__":
@@ -39,4 +41,11 @@ if __name__ == "__main__":
     # for index in movement:
     #     for i in range(0,1):
     #         visFile(index+str(i)+'.csv')
-    visFile('./src/temp.csv')
+
+    # visFile('./src/DataSet/newFromRealTime/sgfDataRL/rr.csv')
+    # visFile('./src/DataSet/newFromRealTime/hyqData/rrTrial2.csv')
+    # visFile('./src/rrTrial5.csv')
+    # visFile('./src/rrTrial6.csv')
+    visFile('./src/rrTrial4_log.csv')
+    
+    plt.show()

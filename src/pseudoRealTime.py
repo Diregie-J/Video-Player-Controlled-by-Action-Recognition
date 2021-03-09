@@ -25,11 +25,12 @@ winWidth = 150
 # baudrate = 19200
 # ser = serial.Serial(port, baudrate)
 
-folderPath = os.path.abspath('./src/DataSet/newFromRealTime/hyqData')
+# folderPath = os.path.abspath('./src/DataSet/newFromRealTime/hyqData')
+folderPath = os.path.abspath('./src')
 print(folderPath)
 filePathList=[]
 filePathList.append(glob.glob(os.path.join(folderPath, "*.csv")))
-print(filePathList[0][0])
+# print(filePathList[0][0])
 
 for fileName in filePathList[0]:
     # fileName = filePathList[0][0]

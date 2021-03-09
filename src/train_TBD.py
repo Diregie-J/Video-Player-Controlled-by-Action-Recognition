@@ -45,7 +45,7 @@ for filePathListIndex in filePathList:
             emg_3_csv[actionIndex].append(csvData[actionIndex][row][2])
 
 # windowing
-windowing = 0
+windowing = False
 if windowing:
     record_length=300
     window_length=100
