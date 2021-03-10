@@ -25,34 +25,65 @@ for filePathListIndex in filePathList:
     for f in filePathListIndex:
         fileName = Path(f).stem
         print(fileName)
-        data = pd.read_csv(f, header=None).values.tolist() # csv file -> data list (100) of list (3)
+        ### skip any specific action to simplify the task
+        # if fileName[0:2] =='rr' or fileName[0:2] =='lr':
+        #     continue
+        data = pd.read_csv(f, header=None).values.tolist() # csv file -> data list (data length) of list (3)
         print(len(data))
         for i in range(0,len(data),recordLength):
             sigSegment=[[],[],[]]
             for j in range(recordLength):
-                sigSegment[0].append(data[j][0])
-                sigSegment[1].append(data[j][1])
-                sigSegment[2].append(data[j][2])
+                sigSegment[0].append(data[i+j][0])
+                sigSegment[1].append(data[i+j][1])
+                sigSegment[2].append(data[i+j][2])
+            # print(len(sigSegment[0]))
+            # print(sigSegment[0][70:78])
             csvData[fileName[0:2]].append(sigSegment)
+            # sigSegment.clear()
+# len(csvData['lr']) -> 动作的次数: 20
+# len(csvData['lr'][2]) -> 3
+# len(csvData['lr'][0][0]) -> 150
+# csvData['lr'][0] - 3x150  -> 150x3
+minimumValue=NaN
+for index in csvData.keys():
+    temp=len(index)
+    if temp<minimumValue:
+        minimumValue=temp
+
+
 
 print(csvData.keys())
 print(len(csvData['fi']))
 
 # 划窗
 
+isLog = True
 featureMatrix=[]
 labelMatrix=[]
 for index in csvData.keys():
-    if True:#index !='lr' or index !='rr':
+    if isLog:
+        featureLog = './src/'+index+'_feature.csv'
+        fl = open(featureLog, 'w')
+    if index !='lr' or index !='rr':
         for i in range(0,len(csvData[index])):
             featureVector = getFeatureVector(csvData[index][i])
             # print(len(featureVector))
             featureMatrix.append(featureVector)
             labelMatrix.append(labelSwitch(index))
+            if isLog:
+                for item in featureVector:
+                    fl.write(str(item))
+                    fl.write(',')
+                fl.write(str(index))
+                fl.write('\n')
+
 featureMatrix = np.array(featureMatrix)
 print(featureMatrix.shape)
 labelMatrix = np.array(labelMatrix).reshape(len(labelMatrix),1)
 print(labelMatrix.shape)
+# discard the last row to prevent errors
+featureMatrix = featureMatrix[:-1, :]
+labelMatrix = labelMatrix[:-1, :]
 
 # training the classifier
 from keras.models import Sequential
@@ -66,6 +97,9 @@ import numpy as np
 import tensorflow as tf
 tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 tf.random.set_seed(1234)
+
+# normalisation
+# featureMatrix = normalize(featureMatrix, axis = 1)
 
 state = np.random.get_state()
 np.random.shuffle(featureMatrix)
@@ -97,7 +131,7 @@ model.compile(loss='categorical_crossentropy',
               optimizer='adam',
               metrics=['accuracy'])
 
-early_stop = EarlyStopping(monitor='val_accuracy', min_delta=0, patience=15, verbose=0, mode='max', baseline=None, restore_best_weights=True)
+early_stop = EarlyStopping(monitor='val_accuracy', min_delta=0, patience=10, verbose=0, mode='max', baseline=None, restore_best_weights=True)
 history=model.fit(x_train, y_train_class, epochs=100, batch_size=100, verbose=1, validation_data=(x_validate, y_validate_class), callbacks=[early_stop])
 score = model.evaluate(x_test, y_test_class, verbose=0)
 print('Test loss:', score[0])

@@ -26,7 +26,7 @@ def decide_filename(action: str) -> str:
 # change filename, port number, and baudrate if needed
 print(os.path.abspath('.'))
 filename = './src/Dataset/newFromRealTime/'+'rw'+'.csv'
-port = "/dev/cu.usbmodem14401"
+port = "COM9"
 baudrate = 19200
 ser = serial.Serial(port, baudrate)
 # ser.set_buffer_size(rx_size=2147483647, tx_size=2147483647)

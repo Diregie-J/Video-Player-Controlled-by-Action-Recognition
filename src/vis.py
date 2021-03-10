@@ -43,9 +43,11 @@ if __name__ == "__main__":
     #         visFile(index+str(i)+'.csv')
 
     # visFile('./src/DataSet/newFromRealTime/sgfDataRL/rr.csv')
-    # visFile('./src/DataSet/newFromRealTime/hyqData/rrTrial2.csv')
+    visFile('./src/DataSet/newFromRealTime/hyqData/lrTrial2.csv')
+    visFile('./src/DataSet/newFromRealTime/sgfDataRL/lr.csv')
+    visFile('./src/DataSet/newFromRealTime/zjhData/lr.csv')
     # visFile('./src/rrTrial5.csv')
-    # visFile('./src/rrTrial6.csv')
-    visFile('./src/rrTrial4_log.csv')
+    # # visFile('./src/rrTrial6.csv')
+    # visFile('./src/rrTrial4_log.csv')
     
     plt.show()

@@ -20,8 +20,8 @@ port = "COM9"
 baudrate = 19200
 ser = serial.Serial(port, baudrate)
 
-featureLog = './src/'+'fist'+'_feature_log.csv'
-predictionLog = './src/'+'fist'+'_prediction_log.csv'
+featureLog = './src/'+'temp'+'_feature_log.csv'
+predictionLog = './src/'+'temp'+'_prediction_log.csv'
 fl = open(featureLog, 'w')
 pl = open(predictionLog, 'w')
 if __name__ == '__main__':
