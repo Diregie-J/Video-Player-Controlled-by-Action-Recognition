@@ -17,6 +17,7 @@ f = open('./src/normInfo.csv','r')
 data = pd.read_csv(f, header=None).values.tolist()
 meanValue=data[0]
 stdValue=data[1]
+f.close()
 
 if __name__ == '__main__':
     valid = False
