@@ -1,7 +1,7 @@
 const unsigned long READ_PERIOD = 10000;  // 10000(us) = 1/(100Hz)
 int sensorV[3]={0};
 String blank = " ";
-
+int incValue=1;
 int flag=1;
 
 void setup() {
@@ -26,10 +26,18 @@ void loop() {
       }
     
     if(flag==1){
-      lastRead += READ_PERIOD;
-//      sensorV[0] = random(1000);
-//      sensorV[1] = random(1000);
-//      sensorV[2] = random(1000);
+      
+//      lastRead += READ_PERIOD;
+//      sensorV[0] = incValue;
+//      sensorV[1] = incValue;
+//      sensorV[2] = incValue;
+//      if(incValue<1000){
+//        incValue+=50;
+//      }
+//      else{
+//        incValue=0;
+//      }
+      
       sensorV[0] = analogRead(A0);
       sensorV[1] = analogRead(A1);
       sensorV[2] = analogRead(A2);

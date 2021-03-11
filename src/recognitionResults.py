@@ -17,3 +17,6 @@ def printResults(featureVector, model):
     print(result)
     print('###########')
     return predictResult.tolist()
+
+def printOutput(data):
+    return motionList[data[0]]

@@ -15,7 +15,7 @@ import glob
 #k and n are used to detect whether a motion happens
 k = 10
 n = 10
-winWidth = 150
+winWidth = 300
 
 # model = load_model('./src/ML_models/test2.h5')
 # model_cnn = load_model('./src/ML_models/cnn.h5')
@@ -25,17 +25,19 @@ winWidth = 150
 # baudrate = 19200
 # ser = serial.Serial(port, baudrate)
 
-# folderPath = os.path.abspath('./src/DataSet/newFromRealTime/hyqData')
-folderPath = os.path.abspath('./src')
+folderPath = os.path.abspath('./src/DataSet/newFromRealTime/hyqData')
+# folderPath = os.path.abspath('./src')
 print(folderPath)
 filePathList=[]
 filePathList.append(glob.glob(os.path.join(folderPath, "*.csv")))
 # print(filePathList[0][0])
 
 for fileName in filePathList[0]:
+    # if fileName[-5] == 'g':
+    #     continue
     # fileName = filePathList[0][0]
     log = fileName[0:-4] + '_log.csv'
-
+    f = open(log, 'w')
 
     if True: #__name__ == '__main__':
         time.sleep(1)
@@ -93,7 +95,7 @@ for fileName in filePathList[0]:
                         smoothSig.append(tools.knnForwardRegression(sig,k))
                     # print(len(smoothSig[0]))
                     # path = os.path.join(os.getcwd(),'uu'+str(segCounter)+".csv")
-                    f = open(log, 'a')
+                    # f = open(log, 'a')
                     for i in range(len(signalSegment[2])):
                         f.write(str(signalSegment[0][i]))
                         f.write(',')
@@ -101,7 +103,7 @@ for fileName in filePathList[0]:
                         f.write(',')
                         f.write(str(signalSegment[2][i]))
                         f.write('\n')
-                    f.close()
+                    # f.close()
 
                     #Get feature vector
                     # featureVector = feature.getFeatureVector(smoothSig)

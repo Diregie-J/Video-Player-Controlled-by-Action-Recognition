@@ -1,6 +1,7 @@
 import os
+import numpy as np
 
-jumpThreshold = 50
+jumpThreshold = 40
 valueLimit = 250
 
 #Calculate the value of a point preprocessed
@@ -98,3 +99,35 @@ def labelSwitch(arg):
         'fi': 4
     }
     return switcher[arg]
+
+
+def getNormInfo(matArray):
+    meanArray = np.mean(matArray,0)
+    stdArray = np.std(matArray,0)
+
+    return meanArray, stdArray
+
+def standardise(matArray,meanValue,stdValue):
+    standardisedArray = np.zeros((matArray.shape[0], matArray.shape[1]))
+    
+    for i in range(matArray.shape[0]):
+        for j in range(matArray.shape[1]):
+            if stdValue[j] == 0:
+                print('Bugs in standardisation') ### less chance happen
+            else:
+                standardisedArray[i,j] = matArray[i,j]-meanValue[j]/stdValue[j]
+    return standardisedArray
+
+# class normInfo()
+
+
+if __name__ == "__main__":
+    trainList =[[1,2,3],[4,5,6],[7,8,9],[11,12,13],[11,12,13],[11,12,13]]
+    testList = [0,0,0]
+    trainArray = np.array(trainList)
+    testArray = np.array(testList)
+    num1,num2 = getNormInfo(trainArray)
+    num1=list(num1)
+    print(len(num1))
+    # print(np.subtract(testArray,num1)/num2)
+    # print(standardise(trainArray))

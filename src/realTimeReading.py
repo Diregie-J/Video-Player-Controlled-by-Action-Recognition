@@ -8,18 +8,31 @@ import time
 from keras.models import load_model
 import csv
 from tools import getSmoothedList, knnForwardRegression
+import pickle
+import joblib
+import pandas as pd
+import numpy as np
 
 #k and n are used to detect whether a motion happens
 k = 10
 n = 10
-winWidth = 150
+winWidth = 300
 
-model = load_model('./src/ML_models/test3.h5')
+# fname = './src/ML_Models/svm_model.pkl'
+# model = joblib.load(open(fname, 'rb'))
+model = load_model('./src/ML_models/ann_model.h5')
 # model_cnn = load_model('./src/ML_models/cnn.h5')
 port = "COM9"
 baudrate = 19200
 ser = serial.Serial(port, baudrate)
 
+# real-time standardisation
+f = open('./src/normInfo.csv','r')
+data = pd.read_csv(f, header=None).values.tolist()
+meanValue=data[0]
+stdValue=data[1]
+f.close()
+# record prediction being made
 featureLog = './src/'+'temp'+'_feature_log.csv'
 predictionLog = './src/'+'temp'+'_prediction_log.csv'
 fl = open(featureLog, 'w')
@@ -91,21 +104,37 @@ if __name__ == '__main__':
                 #     f.close()
                 #     f = open(path, 'a')
 
-                fl = open(featureLog, 'a')
-                pl = open(predictionLog, 'a')
-                #Get feature vector
+                # fl = open(featureLog, 'a')
+                # pl = open(predictionLog, 'a')
+                
+                # featureVector = feature.getFeatureVector(signalSegment)
+                # featureArray = np.array(featureVector)
+                # featureArray = featureArray.reshape((1,len(featureVector)))
+                # featureArray = tools.standardise(featureArray,meanValue,stdValue)
+                ### SVM
+                # svmOutput = model.predict(featureArray)
+                # print(rr.printOutput(svmOutput))
+
+
+
+                ### ANN:
                 featureVector = feature.getFeatureVector(signalSegment)
-                for item in featureVector:
-                    fl.write(str(item))
-                    fl.write(',')
-                fl.write('\n')
-                # #Get recognition result
+                featureArray = np.array(featureVector)
+                featureArray = featureArray.reshape((1,len(featureVector)))
+                featureArray = tools.standardise(featureArray,meanValue,stdValue)
                 resultVector = rr.printResults(featureVector, model)
-                # rr.printResults(signalSegment, model_cnn)
-                for item in resultVector:
-                    pl.write(str(item))
-                    pl.write(',')
-                pl.write('\n')
+                
+                # for item in featureVector:
+                #     fl.write(str(item))
+                #     fl.write(',')
+                # fl.write('\n')
+                # #Get recognition result
+
+                # rr.printResults(signalSegment, model)
+                # for item in resultVector:
+                #     pl.write(str(item))
+                #     pl.write(',')
+                # pl.write('\n')
                 
                 #Plot signal segment
                 segCounter = segCounter + 1

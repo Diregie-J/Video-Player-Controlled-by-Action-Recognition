@@ -73,10 +73,10 @@ def getFeatureVector(signalSeg):
             vcf=0
 
         timeDomainFeature = [mav, wl, ssc, rms]
-        frequentDomainFeature = [meanFreq, meanPower, vcf]
+        # frequentDomainFeature = [meanPower]
 
         featuresForOneChannel = timeDomainFeature
-        featuresForOneChannel.extend(frequentDomainFeature)
+        # featuresForOneChannel.extend(frequentDomainFeature)
         featureVector.extend(featuresForOneChannel)
     return featureVector
 

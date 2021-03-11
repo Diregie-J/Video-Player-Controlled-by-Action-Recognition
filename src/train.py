@@ -20,12 +20,12 @@ filePathList=[]
 data=[]
 filePathList.append(glob.glob(os.path.join(folderPath, "*_log.csv")))
 csvData={'lr': [] , 'rr': [], 'lw': [], 'rw': [], 'fi': []}
-recordLength=150
+recordLength=300
 for filePathListIndex in filePathList:
     for f in filePathListIndex:
         fileName = Path(f).stem
         print(fileName)
-        ### skip any specific action to simplify the task
+        ### skip any specific action
         # if fileName[0:2] =='rr' or fileName[0:2] =='lr':
         #     continue
         data = pd.read_csv(f, header=None).values.tolist() # csv file -> data list (data length) of list (3)
@@ -40,33 +40,42 @@ for filePathListIndex in filePathList:
             # print(sigSegment[0][70:78])
             csvData[fileName[0:2]].append(sigSegment)
             # sigSegment.clear()
+
+'''保证每个动作训练数据量一样'''
+csvLength=[]
+for i in csvData.keys():
+    csvLength.append(len(csvData[i]))
+print(min(csvLength))
+actionLength = min(csvLength)
+
 # len(csvData['lr']) -> 动作的次数: 20
 # len(csvData['lr'][2]) -> 3
 # len(csvData['lr'][0][0]) -> 150
 # csvData['lr'][0] - 3x150  -> 150x3
-minimumValue=NaN
-for index in csvData.keys():
-    temp=len(index)
-    if temp<minimumValue:
-        minimumValue=temp
-
-
-
-print(csvData.keys())
-print(len(csvData['fi']))
+# minimumValue=NaN
+# for index in csvData.keys():
+#     temp=len(index)
+#     if temp<minimumValue:
+#         minimumValue=temp
 
 # 划窗
 
 isLog = True
 featureMatrix=[]
 labelMatrix=[]
+featureVector=[]
 for index in csvData.keys():
+    print(len(csvData[index]))
     if isLog:
         featureLog = './src/'+index+'_feature.csv'
         fl = open(featureLog, 'w')
-    if index !='lr' or index !='rr':
-        for i in range(0,len(csvData[index])):
+    if index !='rr':
+        for i in range(actionLength):
             featureVector = getFeatureVector(csvData[index][i])
+            
+            # if len(featureVector)!=21:
+            #     print('wrong length -- discarded')
+            #     continue
             # print(len(featureVector))
             featureMatrix.append(featureVector)
             labelMatrix.append(labelSwitch(index))
@@ -76,6 +85,8 @@ for index in csvData.keys():
                     fl.write(',')
                 fl.write(str(index))
                 fl.write('\n')
+        # if index=='fi':
+        #     print(len(featureVector))
 
 featureMatrix = np.array(featureMatrix)
 print(featureMatrix.shape)
@@ -117,7 +128,7 @@ y_train_class = np_utils.to_categorical(y_train)
 y_test_class = np_utils.to_categorical(y_test)
 y_validate_class = np_utils.to_categorical(y_validate)
 
-print(x_train[0])
+# print(x_train[0])
 # print(y_train_class.shape)
 # print(x_validate.shape)
 # print(y_validate_class.shape)
@@ -131,7 +142,7 @@ model.compile(loss='categorical_crossentropy',
               optimizer='adam',
               metrics=['accuracy'])
 
-early_stop = EarlyStopping(monitor='val_accuracy', min_delta=0, patience=10, verbose=0, mode='max', baseline=None, restore_best_weights=True)
+early_stop = EarlyStopping(monitor='val_accuracy', min_delta=0, patience=100, verbose=0, mode='max', baseline=None, restore_best_weights=True)
 history=model.fit(x_train, y_train_class, epochs=100, batch_size=100, verbose=1, validation_data=(x_validate, y_validate_class), callbacks=[early_stop])
 score = model.evaluate(x_test, y_test_class, verbose=0)
 print('Test loss:', score[0])
@@ -156,4 +167,4 @@ plt.show()
 
 
 
-model.save('test3.h5')
+model.save('ann_model.h5')
