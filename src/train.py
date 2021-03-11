@@ -8,7 +8,7 @@ from pathlib import Path
 from scipy import signal
 from scipy.fft import fft, ifft, fftfreq, fftshift
 import random
-from tools import getSmoothedList, labelSwitch, standardise
+from tools import getSmoothedList, labelSwitch, standardise, getNormInfo
 from featureExtraction import getFeatureVector
 from model import model_ann
 from keras.models import load_model
@@ -89,8 +89,25 @@ import tensorflow as tf
 tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 tf.random.set_seed(1234)
 
-# normalisation
-featureMatrix = standardise(featureMatrix)
+# standardisation
+fileName_info = open('./src/normInfo.csv','w')
+meanValue, stdValue = getNormInfo(featureMatrix)
+featureMatrix = standardise(featureMatrix,meanValue,stdValue)
+
+# save mean and std into a csv for real-time standardisation
+meanValue=list(meanValue)
+stdValue=list(stdValue)
+print(len(meanValue))
+for i in range(len(meanValue)-1):
+    fileName_info.write(str(meanValue[i]))
+    fileName_info.write(',')
+fileName_info.write(str(meanValue[i+1]))
+fileName_info.write('\n')
+for i in range(len(stdValue)-1):
+    fileName_info.write(str(stdValue[i]))
+    fileName_info.write(',')
+fileName_info.write(str(stdValue[i+1]))
+fileName_info.close()
 
 
 state = np.random.get_state()

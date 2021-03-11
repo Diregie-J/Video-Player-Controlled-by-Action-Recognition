@@ -106,27 +106,29 @@ def getNormInfo(matArray):
 
     return meanArray, stdArray
 
-def standardise(matArray):
-    meanValue,stdValue = getNormInfo(matArray)
+def standardise(matArray,meanValue,stdValue):
     standardisedArray = np.zeros((matArray.shape[0], matArray.shape[1]))
     
     for i in range(matArray.shape[0]):
         for j in range(matArray.shape[1]):
-            standardisedArray[i,j] = matArray[i,j]-meanValue[j]/stdValue[j]
+            if stdValue[j] == 0:
+                print('Bugs in standardisation') ### less chance happen
+            else:
+                standardisedArray[i,j] = matArray[i,j]-meanValue[j]/stdValue[j]
     return standardisedArray
+
+# class normInfo()
 
 
 if __name__ == "__main__":
-    trainList =[[1,2,3],[4,5,6],[7,8,9],[11,12,13]]
+    trainList =[[1,2,3],[4,5,6],[7,8,9],[11,12,13],[11,12,13],[11,12,13]]
     testList = [0,0,0]
     trainArray = np.array(trainList)
     testArray = np.array(testList)
-    # print(np.zeros((np.size(trainList,0), np.size(trainList,1))))
-    # print(trainArray.shape[0])
     num1,num2 = getNormInfo(trainArray)
-
-    # print(np.subtract(testArray,num1))
-
+    num1=list(num1)
+    print(len(num1))
+    # print(np.subtract(testArray,num1)/num2)
     # print(standardise(trainArray))
 
 
