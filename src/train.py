@@ -41,8 +41,12 @@ for filePathListIndex in filePathList:
             csvData[fileName[0:2]].append(sigSegment)
             # sigSegment.clear()
 
-print(csvData.keys())
-print(len(csvData['fi']))
+'''保证每个动作训练数据量一样'''
+csvLength=[]
+for i in csvData.keys():
+    csvLength.append(len(csvData[i]))
+print(min(csvLength))
+actionLength = min(csvLength)
 
 # 划窗
 
@@ -54,7 +58,7 @@ for index in csvData.keys():
         featureLog = './src/'+index+'_feature.csv'
         fl = open(featureLog, 'w')
     if index !='lr' or index !='rr':
-        for i in range(0,len(csvData[index])):
+        for i in range(actionLength):
             featureVector = getFeatureVector(csvData[index][i])
             # print(len(featureVector))
             featureMatrix.append(featureVector)
