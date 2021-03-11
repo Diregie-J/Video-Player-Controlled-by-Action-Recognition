@@ -8,7 +8,7 @@ from pathlib import Path
 from scipy import signal
 from scipy.fft import fft, ifft, fftfreq, fftshift
 import random
-from tools import getSmoothedList, labelSwitch
+from tools import getSmoothedList, labelSwitch, standardise
 from featureExtraction import getFeatureVector
 from model import model_ann
 from keras.models import load_model
@@ -90,7 +90,8 @@ tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 tf.random.set_seed(1234)
 
 # normalisation
-# featureMatrix = normalize(featureMatrix, axis = 1)
+featureMatrix = standardise(featureMatrix)
+
 
 state = np.random.get_state()
 np.random.shuffle(featureMatrix)

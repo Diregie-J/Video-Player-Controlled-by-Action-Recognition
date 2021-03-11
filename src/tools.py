@@ -1,4 +1,5 @@
 import os
+import numpy as np
 
 jumpThreshold = 50
 valueLimit = 250
@@ -98,3 +99,34 @@ def labelSwitch(arg):
         'fi': 4
     }
     return switcher[arg]
+
+def getNormInfo(matArray):
+    meanArray = np.mean(matArray,0)
+    stdArray = np.std(matArray,0)
+
+    return meanArray, stdArray
+
+def standardise(matArray):
+    meanValue,stdValue = getNormInfo(matArray)
+    standardisedArray = np.zeros((matArray.shape[0], matArray.shape[1]))
+    
+    for i in range(matArray.shape[0]):
+        for j in range(matArray.shape[1]):
+            standardisedArray[i,j] = matArray[i,j]-meanValue[j]/stdValue[j]
+    return standardisedArray
+
+
+if __name__ == "__main__":
+    trainList =[[1,2,3],[4,5,6],[7,8,9],[11,12,13]]
+    testList = [0,0,0]
+    trainArray = np.array(trainList)
+    testArray = np.array(testList)
+    # print(np.zeros((np.size(trainList,0), np.size(trainList,1))))
+    # print(trainArray.shape[0])
+    num1,num2 = getNormInfo(trainArray)
+
+    # print(np.subtract(testArray,num1))
+
+    # print(standardise(trainArray))
+
+
