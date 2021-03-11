@@ -66,7 +66,10 @@ try:
             f.write(',')
             f.write(str(data[2]))
             f.write('\n')
-
+        
+        print('休息2秒')
+        sleep(2)
+        print('Start:')
         fileCount += 1
     vis.visFile(filename)
 except KeyboardInterrupt:
