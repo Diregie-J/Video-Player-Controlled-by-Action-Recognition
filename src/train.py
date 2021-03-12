@@ -8,7 +8,7 @@ from pathlib import Path
 from scipy import signal
 from scipy.fft import fft, ifft, fftfreq, fftshift
 import random
-from tools import getSmoothedList, labelSwitch
+from tools import getSmoothedList, labelSwitch, getNormInfo, standardise
 from featureExtraction import getFeatureVector
 from model import model_ann
 from keras.models import load_model
@@ -69,7 +69,7 @@ for index in csvData.keys():
     if isLog:
         featureLog = './src/'+index+'_feature.csv'
         fl = open(featureLog, 'w')
-    if index !='rr':
+    if True:
         for i in range(actionLength):
             featureVector = getFeatureVector(csvData[index][i])
             
@@ -88,6 +88,8 @@ for index in csvData.keys():
         # if index=='fi':
         #     print(len(featureVector))
 
+
+
 featureMatrix = np.array(featureMatrix)
 print(featureMatrix.shape)
 labelMatrix = np.array(labelMatrix).reshape(len(labelMatrix),1)
@@ -95,6 +97,28 @@ print(labelMatrix.shape)
 # discard the last row to prevent errors
 featureMatrix = featureMatrix[:-1, :]
 labelMatrix = labelMatrix[:-1, :]
+
+# standardisation
+fileName_info = open('./src/normInfo.csv','w')
+meanValue, stdValue = getNormInfo(featureMatrix)
+featureMatrix = standardise(featureMatrix,meanValue,stdValue)
+
+# save mean and std into a csv for real-time standardisation
+meanValue=list(meanValue)
+stdValue=list(stdValue)
+print(len(meanValue))
+for i in range(len(meanValue)-1):
+    fileName_info.write(str(meanValue[i]))
+    fileName_info.write(',')
+fileName_info.write(str(meanValue[i+1]))
+fileName_info.write('\n')
+for i in range(len(stdValue)-1):
+    fileName_info.write(str(stdValue[i]))
+    fileName_info.write(',')
+fileName_info.write(str(stdValue[i+1]))
+fileName_info.close()
+
+
 
 # training the classifier
 from keras.models import Sequential

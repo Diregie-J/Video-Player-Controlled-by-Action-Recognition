@@ -30,12 +30,14 @@ folderPath = os.path.abspath('./src/DataSet/newFromRealTime/hyqData')
 print(folderPath)
 filePathList=[]
 filePathList.append(glob.glob(os.path.join(folderPath, "*.csv")))
-# print(filePathList[0][0])
+print(filePathList[0])
 
 for fileName in filePathList[0]:
-    # if fileName[-5] == 'g':
-    #     continue
+    print(fileName)
+    if fileName[-5] == 'g':
+        continue
     # fileName = filePathList[0][0]
+    # print(filePathList[0][0])
     log = fileName[0:-4] + '_log.csv'
     f = open(log, 'w')
 
@@ -96,13 +98,14 @@ for fileName in filePathList[0]:
                     # print(len(smoothSig[0]))
                     # path = os.path.join(os.getcwd(),'uu'+str(segCounter)+".csv")
                     # f = open(log, 'a')
-                    for i in range(len(signalSegment[2])):
-                        f.write(str(signalSegment[0][i]))
-                        f.write(',')
-                        f.write(str(signalSegment[1][i]))
-                        f.write(',')
-                        f.write(str(signalSegment[2][i]))
-                        f.write('\n')
+                    if len(signalSegment[2]) ==300:
+                        for i in range(len(signalSegment[2])):
+                            f.write(str(signalSegment[0][i]))
+                            f.write(',')
+                            f.write(str(signalSegment[1][i]))
+                            f.write(',')
+                            f.write(str(signalSegment[2][i]))
+                            f.write('\n')
                     # f.close()
 
                     #Get feature vector

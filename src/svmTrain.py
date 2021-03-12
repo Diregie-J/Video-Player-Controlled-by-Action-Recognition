@@ -147,7 +147,7 @@ for index in csvData.keys():
     if isLog:
         featureLog = './src/'+index+'_feature.csv'
         fl = open(featureLog, 'w')
-    if index !='rr':
+    if True: #index !='rr':
         for i in range(actionLength):
             featureVector = getFeatureVector(csvData[index][i])
             # print(len(featureVector))

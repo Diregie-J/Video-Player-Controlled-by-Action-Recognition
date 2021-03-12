@@ -10,10 +10,10 @@ import numpy as np
 import tensorflow as tf
 
 
-def nnClassifier(featureVector, model):
+def nnClassifier(rtSample, model):
     # print(os.path.abspath('.'))
 
-    rtSample = np.array(featureVector).reshape(1,len(featureVector))
+    # rtSample = np.array(featureVector).reshape(1,len(featureVector))
 
 
     predictResult = model.predict(rtSample)

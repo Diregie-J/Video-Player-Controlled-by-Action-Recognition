@@ -18,9 +18,9 @@ k = 10
 n = 10
 winWidth = 300
 
-# fname = './src/ML_Models/svm_model.pkl'
-# model = joblib.load(open(fname, 'rb'))
-model = load_model('./src/ML_models/ann_model.h5')
+fname = './src/ML_Models/svm_model.pkl'
+model = joblib.load(open(fname, 'rb'))
+# model = load_model('./src/ML_models/useable/ann_mav-ssc-wl-rms-mp.h5')
 # model_cnn = load_model('./src/ML_models/cnn.h5')
 port = "COM9"
 baudrate = 19200
@@ -107,22 +107,23 @@ if __name__ == '__main__':
                 # fl = open(featureLog, 'a')
                 # pl = open(predictionLog, 'a')
                 
-                # featureVector = feature.getFeatureVector(signalSegment)
-                # featureArray = np.array(featureVector)
-                # featureArray = featureArray.reshape((1,len(featureVector)))
-                # featureArray = tools.standardise(featureArray,meanValue,stdValue)
                 ### SVM
-                # svmOutput = model.predict(featureArray)
-                # print(rr.printOutput(svmOutput))
-
-
-
-                ### ANN:
                 featureVector = feature.getFeatureVector(signalSegment)
                 featureArray = np.array(featureVector)
                 featureArray = featureArray.reshape((1,len(featureVector)))
                 featureArray = tools.standardise(featureArray,meanValue,stdValue)
-                resultVector = rr.printResults(featureVector, model)
+                svmOutput = model.predict(featureArray)
+                print(rr.printOutput(svmOutput))
+
+
+
+                ### ANN:
+                '''featureVector = feature.getFeatureVector(signalSegment)
+                print(len(featureVector))
+                featureArray = np.array(featureVector)
+                featureArray = featureArray.reshape((1,len(featureVector)))
+                featureArray = tools.standardise(featureArray,meanValue,stdValue)
+                resultVector = rr.printResults(featureArray, model)'''
                 
                 # for item in featureVector:
                 #     fl.write(str(item))

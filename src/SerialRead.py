@@ -25,19 +25,19 @@ def decide_filename(action: str) -> str:
 
 # change filename, port number, and baudrate if needed
 print(os.path.abspath('.'))
-filename = './src/Dataset/newFromRealTime/'+'rr'+'.csv'
+filename = './src/Dataset/newFromRealTime/'+'rr3'+'.csv'
 port = "COM9"
 baudrate = 19200
 ser = serial.Serial(port, baudrate)
 # ser.set_buffer_size(rx_size=2147483647, tx_size=2147483647)
-
 # ser.write("a".encode())
+
 f = open(filename, 'w')
-print('5秒后开始记录数据，看到start后开始做动作')
-sleep(3)
+print('1秒后开始记录数据，看到start后开始做动作')
+sleep(1)
 ser.flushInput()
 ser.flushOutput()
-sleep(2)
+sleep(0.5)
 print('Start:')
 try:
     recordCount = 0
@@ -67,9 +67,10 @@ try:
         # f = open(filename, 'a')
         # time2=time.time()-time1
         # print(time2)
-
+        if recordCount%300 == 0:
+            print('You have recorded 300 samples')
         # print("Relax")
         # sleep(3)
-    vis.visFile(filename)
+    vis.visFile(filename,0)
 except KeyboardInterrupt:
-    vis.visFile(filename)
+    vis.visFile(filename,0)
