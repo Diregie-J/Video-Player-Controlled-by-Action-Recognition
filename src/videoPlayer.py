@@ -112,85 +112,109 @@ class VideoPlayer(QWidget):
 
     def positionChanged(self, position):
         self.positionSlider.setValue(position)
+
+        v = self.volumeSlider.value()
         pause = False
         global forwardLock
         global backwardLock
-        f = open("test.txt", "r+")
+        global upLock
+        global downLock
+        f = open("result.txt", "r+")
         data = f.readline()
+
+        
         print("Reading txt...")
         print("Data read from txt: ", data)
-        if data == "22":
+        if data == "[4]":
             pause = True
             self.mediaPlayer.pause()
             self.mediaStateChanged(2)
             f.close()
-            '''while pause:
-                f = open("test.txt", "r+")
+            while pause:
+                f = open("result.txt", "r+")
                 l = f.readline()
-                if l == "00":
+                if l == "[3]":
                     pause = False
                     self.mediaPlayer.play()
                     self.mediaStateChanged(1)
-                f.close()'''
+                f.close()
 
-        if data == "22" and forwardLock == 0:
+        if data == "[3]" and forwardLock == 0:
             f.close()
             forwardLock = 1
             self.setPosition(position+20000)
-        elif data != "22" and forwardLock == 1:
+            f = open("result.txt", "w")
+            f.write('no motion')
+            f.close()
+        elif data != "[3]" and forwardLock == 1:
             forwardLock = 0
             f.close()
         else:
             f.close()
 
-        
-        if data == "22" and backwardLock == 0:
+        if data == "[2]" and backwardLock == 0:
+
             f.close()
             backwardLock = 1
             if position > 20000:
                 self.setPosition(position-20000)
             else:
                 self.setPosition(0)
-        elif data != "22" and backwardLock == 1:
+            f = open("result.txt", "w")
+            f.write('no motion')
+            f.close()
+        elif data != "[2]" and backwardLock == 1:
             backwardLock = 0
             f.close()
         else:
             f.close()
-        print("Position changed:", position)
 
-    def volumeChanged(self, value):
-        self.volumeSlider.setValue(value)
-        global upLock
-        global downLock
-        f = open("test.txt", "r+")
-        data = f.readline()
-
-        if data == "33" and upLock == 0:
+        if data == "[1]" and upLock == 0:
             f.close()
             upLock = 1
-            if value+5 > 100:
+            print(v)
+            if v+15 > 100:
                 self.setVolume(100)
             else:
-                self.setVolume(value + 5)
-        elif data != "33" and upLock == 1:
+                v+=15
+                self.setVolume(v)
+            print(v)
+            print("Volume set")
+            f = open("result.txt", "w")
+            f.write('no motion')
+            f.close()
+        elif data != "[1]" and upLock == 1:
             upLock = 0
             f.close()
         else:
             f.close()
 
         
-        if data == "44" and downLock == 0:
+        if data == "[0]" and downLock == 0:
             f.close()
             downLock = 1
-            if value-5 < 0:
+            print(v)
+            if v-15 < 0:
                 self.setVolume(0)
             else:
-                self.setVolume(value - 5)
-        elif data != "44" and downLock == 1:
+                v-=15
+                self.setVolume(v)
+            print(v)
+            print("Volume set")
+            f = open("result.txt", "w")
+            f.write('no motion')
+            f.close()
+        elif data != "[0]" and downLock == 1:
             downLock = 0
             f.close()
         else:
             f.close()
+
+        self.setVolume(v)
+        print("Position changed:", position)
+
+    def volumeChanged(self, value):
+        self.volumeSlider.setValue(value)
         
 
     def setVolume(self, value):

@@ -63,7 +63,7 @@ def getFeatureVector(signalSeg):
             nominatorValue_temp += freq_temp[j]*psd_temp[j]
             denominatorValue_temp += psd_temp[j]
             sm2_temp += np.square(freq_temp[j])*psd_temp[j]
-
+        
         meanFreq = nominatorValue_temp/denominatorValue_temp
         medianFreq = freq_temp[np.argsort(psd_temp)[len(psd_temp)//2]]
         meanPower = denominatorValue_temp/len(freq_temp)

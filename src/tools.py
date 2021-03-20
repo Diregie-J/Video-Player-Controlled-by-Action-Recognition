@@ -1,8 +1,12 @@
 import os
 import numpy as np
 
-jumpThreshold = 50
-valueLimit = 250
+
+'''jumpThreshold = 20
+valueLimit = 100'''
+
+jumpThreshold = 10
+valueLimit = 100
 
 #Calculate the value of a point preprocessed
 def getKnnForwardMean(dataList, index, k):
@@ -130,5 +134,3 @@ if __name__ == "__main__":
     print(len(num1))
     # print(np.subtract(testArray,num1)/num2)
     # print(standardise(trainArray))
-
-

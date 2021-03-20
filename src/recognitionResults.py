@@ -10,10 +10,37 @@ def printResults(featureVector, model):
         motionIndex = int(np.argmax(predictResult))
     else:
         motionIndex = 5
-    result = "%s is detected." %(motionList[motionIndex])
+    result = "%s" %(motionList[motionIndex])
 
     # result=1
     print('###########')
     print(result)
     print('###########')
+    
+    f=open('result.txt','w')
+    f.write(str(result))
+    f.close()
+
     return predictResult.tolist()
+
+def printResultsCNN(rawSignal, model):
+    predictResult = nn.cnnClassifier(rawSignal, model)
+    if np.max(predictResult) > 0.5:
+        motionIndex = int(np.argmax(predictResult))
+    else:
+        motionIndex = 5
+    result = "%s is detected." % (motionList[motionIndex])
+
+    # result=1
+    print('###########')
+    print(result)
+    print('###########')
+    
+    return predictResult.tolist()
+
+
+
+
+
+def printOutput(data):
+    return motionList[data[0]]

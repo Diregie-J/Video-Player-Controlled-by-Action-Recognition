@@ -29,9 +29,11 @@ port = "COM9"
 baudrate = 19200
 ser = serial.Serial(port, baudrate)
 
+
 ### 记录10次也即10个csv，每个csv 300行 -- 视情况修改
 recordTimes = 10
 recordLength = 300
+
 
 fileCount = 0
 filename = './src/'+'rw'+str(fileCount)+'.csv'
@@ -66,11 +68,12 @@ try:
             f.write(',')
             f.write(str(data[2]))
             f.write('\n')
-        
+
         print('休息2秒')
         sleep(2)
         print('Start:')
         fileCount += 1
+        
     vis.visFile(filename)
 except KeyboardInterrupt:
     vis.visFile(filename)

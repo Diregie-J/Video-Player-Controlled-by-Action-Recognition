@@ -10,10 +10,10 @@ import numpy as np
 import tensorflow as tf
 
 
-def nnClassifier(featureVector, model):
+def nnClassifier(rtSample, model):
     # print(os.path.abspath('.'))
 
-    rtSample = np.array(featureVector).reshape(1,len(featureVector))
+    # rtSample = np.array(featureVector).reshape(1,len(featureVector))
 
 
     predictResult = model.predict(rtSample)
@@ -36,11 +36,9 @@ def nnClassifier(featureVector, model):
 
 
 def cnnClassifier(raw_signal, model):
-    raw_signal_stack = np.array(raw_signal).reshape(1, 100, 3)
-    print(raw_signal_stack.shape)
-    predictResult = model.predict(raw_signal_stack)
-    print(predictResult)
-    for i in range(predictResult.shape[1]):
-        if(predictResult[0][i] > 0.5):
-            return int(i)
-    return 0
+    raw_signal = np.expand_dims(raw_signal, axis=0)
+
+    print(raw_signal.shape)
+
+    predictResult = model.predict(raw_signal)
+    return predictResult
