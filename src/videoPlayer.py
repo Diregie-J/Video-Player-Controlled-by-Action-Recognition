@@ -45,6 +45,11 @@ class VideoPlayer(QWidget):
         self.volumeSlider = QSlider(Qt.Horizontal)
         self.volumeSlider.setRange(0, 100)
         self.volumeSlider.sliderMoved.connect(self.setVolume)
+
+
+        self.volumeLabel = QLabel()
+        self.volumeLabel.setText("    Volume Bar --> ")
+        self.volumeLabel.setFont(QFont("Noto Sans",10,QFont.Bold))
         
 
         #Information bar
@@ -57,11 +62,16 @@ class VideoPlayer(QWidget):
         controlLayout.addWidget(openButton)
         controlLayout.addWidget(self.playButton)
         controlLayout.addWidget(self.positionSlider)
-        controlLayout.addWidget(self.volumeSlider)
+
+        layoutLine2 = QHBoxLayout()
+        layoutLine2.setContentsMargins(0, 0, 0, 0)
+        layoutLine2.addWidget(self.volumeLabel)
+        layoutLine2.addWidget(self.volumeSlider)
 
         layout = QVBoxLayout()
         layout.addWidget(videoWidget)
         layout.addLayout(controlLayout)
+        layout.addLayout(layoutLine2)
         layout.addWidget(self.statusBar)
 
         self.setLayout(layout)
