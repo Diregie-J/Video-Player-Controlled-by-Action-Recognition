@@ -1,11 +1,9 @@
 import os
-import featureExtraction as feature 
-import recognitionResults as rr 
+import featureExtraction as feature
+import recognitionResults as rr
 import serial
 import tools
 import matplotlib.pyplot as plt
-import time
-from keras.models import load_model
 import csv
 from tools import getSmoothedList, knnForwardRegression
 import pickle
@@ -13,7 +11,8 @@ import joblib
 import pandas as pd
 import numpy as np
 
-#k and n are used to detect whether a motion happens
+
+# k and n are used to detect whether a motion happens
 k = 10
 n = 10
 winWidth = 300
@@ -38,13 +37,12 @@ featureLog = 'temp'+'_feature_log.csv'
 predictionLog = 'temp'+'_prediction_log.csv'
 fl = open(featureLog, 'w')
 pl = open(predictionLog, 'w')
+
+
 if __name__ == '__main__':
-    time.sleep(1)
-    smoothSig=[]
     valid = False
     recordOrNot = False
-    numOfChannel = 3
-    # len(ser.readline().decode().split(" "))
+    numOfChannel = len(ser.readline().decode().split(" "))
     signalSegment = []
     bufferList = []
     recordTimesCounter = 0
@@ -52,35 +50,34 @@ if __name__ == '__main__':
     resetCom = 0
     segCounter = 0
 
-    #initialize valid signal segment
+    # initialize valid signal segment
     counter = 0
     while counter < numOfChannel:
         signalSegment.append([])
         counter = counter + 1
     # print(signalSegment)
-    
-    ser.flushInput()
-    ser.flushOutput()
-    #Real-time reading
+
+    # Real-time reading
     while True:
         data = ser.readline()
-        #bytes --> string
-        data = data.decode() 
-        #Separate strings with “ ”
-        data = data.split(" ") 
-        #string --> float
-        data = list(map(float, data)) 
-        # print(data)
+        # bytes --> string
+        data = data.decode()
+        # Separate strings with “ ”
+        data = data.split(" ")
+        # string --> float
+        data = list(map(float, data))
+
         if len(data) != 3:
             continue
-        #Update buffer list
+
+        # Update buffer list
         if len(bufferList) < k+n:
             bufferList.append(data)
         else:
             bufferList.append(data)
             del bufferList[0]
 
-        #Judge whether to start or end reading
+        # Judge whether to start or end reading
         if not valid:
             if tools.startReading(bufferList, k, n):
                 valid = True
@@ -89,6 +86,7 @@ if __name__ == '__main__':
             if actionModel != 0:
                 actionModel = 0
         else:
+
             if recordTimesCounter >= winWidth: #means reading is over
                 for sig in signalSegment:
                     smoothSig.append(tools.knnForwardRegression(sig,k))
@@ -142,37 +140,36 @@ if __name__ == '__main__':
                 
                 #Plot signal segment
                 segCounter = segCounter + 1
-                if False:
-                    # print(len(signalSegment[0]))
-                    # print(len(tools.generateX(winWidth)))
-                    plt.plot(tools.generateX(winWidth), smoothSig[0], color='blue', label='channel 1')
-                    plt.plot(tools.generateX(winWidth), smoothSig[1], color='orange', label='channel 2')
-                    plt.plot(tools.generateX(winWidth), smoothSig[2], color='green', label='channel 3')
-                    plt.legend()
-                    plt.xlabel('time')
-                    plt.ylabel('value')
-                    plt.show()
-                # path = os.path.join(os.getcwd(),str(segCounter)+".csv")
-                # with open(path, 'a') as f:
-                #     csv_write = csv.writer(f)        
-                #     for a in signalSegment:
-                #         csv_write.writerow(a)
-            
-                #Re-initialize status and signal segment
+                '''if segCounter == 10:
+                        print(len(signalSegment[0]))
+                        print(len(tools.generateX(winWidth)))
+                        plt.plot(tools.generateX(winWidth), signalSegment[0], color='green', label='channel 1')
+                        plt.plot(tools.generateX(winWidth), signalSegment[1], color='red', label='channel 2')
+                        plt.plot(tools.generateX(winWidth), signalSegment[2], color='blue', label='channel 3')
+                        plt.legend()
+                        plt.xlabel('time')
+                        plt.ylabel('value')
+                        plt.show()'''
+                # Save signal segment as csv file
+                path = os.path.join(segCounter, ".csv")
+                with open(path, 'a') as f:
+                    csv_write = csv.writer(f)
+                    for a in signalSegment:
+                        csv_write.writerow(a)
+            if valid(data):
+                print(data)
+                csv_write.writerow(data)
+                # Re-initialize status and signal segment
                 recordTimesCounter = 0
                 valid = False
                 recordOrNot = False
                 for sigList in signalSegment:
-                    sigList.clear()
-                smoothSig.clear()
-                bufferList=[]
-                
-        
-        #Read valid data from serial
+                    sigList = []
+
+        # Read valid data from serial
         if recordOrNot:
             index = 0
             while index < len(signalSegment):
                 signalSegment[index].append(data[index])
                 index = index + 1
             recordTimesCounter = recordTimesCounter + 1
-                

@@ -112,6 +112,7 @@ class VideoPlayer(QWidget):
 
     def positionChanged(self, position):
         self.positionSlider.setValue(position)
+
         v = self.volumeSlider.value()
         pause = False
         global forwardLock
@@ -151,8 +152,8 @@ class VideoPlayer(QWidget):
         else:
             f.close()
 
-        
         if data == "[2]" and backwardLock == 0:
+
             f.close()
             backwardLock = 1
             if position > 20000:

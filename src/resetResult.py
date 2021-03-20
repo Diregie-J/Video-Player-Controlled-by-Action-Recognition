@@ -7,6 +7,7 @@ while True:
     if data != 'no motion':
         time.sleep(2)
         f = open("result.txt", "w")
+
         f.write('no motion')
         f.close()
 

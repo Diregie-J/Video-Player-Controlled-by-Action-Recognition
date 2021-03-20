@@ -5,6 +5,7 @@ import numpy as np
 import math
 from scipy import signal
 from scipy.fft import fft, ifft, fftfreq
+import csv
 
 
 #This file is to calculate the feature matrix of a 3-channel signal segment. 
@@ -68,7 +69,7 @@ def getFeatureVector(signalSeg):
         meanPower = denominatorValue_temp/len(freq_temp)
         vcf = sm2_temp/denominatorValue_temp - np.square(nominatorValue_temp/denominatorValue_temp)
         if denominatorValue_temp==0:
-            print('divide by zero problem -- causing meanFreq and vcf invalid')
+            print('divide by zero problem -- causing meanFreq and vcf invalid -- ignored')
             meanFreq=0
             vcf=0
 
@@ -82,30 +83,35 @@ def getFeatureVector(signalSeg):
 
 
 if __name__ == "__main__":
-    emg_1_csv={'d': [] , 'u': [], 'l': [], 'r': [], 'f': []}
-    emg_2_csv={'d': [] , 'u': [], 'l': [], 'r': [], 'f': []}
-    emg_3_csv={'d': [] , 'u': [], 'l': [], 'r': [], 'f': []}
-    actionList = ['d', 'u', 'l', 'r', 'f']
+    dummyData=[[24, 198, 945],[13,612,124]]
+    with open('eggs.csv', 'w+', newline='') as csvfile:
+        featureCSV = csv.writer(csvfile)
+        featureCSV.writerows(dummyData)
 
-    folderPath_hyq = os.path.abspath('./src/Dataset/new/hyqData/testOnly')
-    filePathList=[]
-    filePathList.append(glob.glob(os.path.join(folderPath_hyq, "*.csv")))
+    # emg_1_csv={'d': [] , 'u': [], 'l': [], 'r': [], 'f': []}
+    # emg_2_csv={'d': [] , 'u': [], 'l': [], 'r': [], 'f': []}
+    # emg_3_csv={'d': [] , 'u': [], 'l': [], 'r': [], 'f': []}
+    # actionList = ['d', 'u', 'l', 'r', 'f']
 
-    for filePathListIndex in filePathList:
-        csvData={'d': [] , 'u': [], 'l': [], 'r': [], 'f': []}
-        dl=[]
-        for f in filePathListIndex:
-            csvData[f[-5]] = pd.read_csv(f, header=None).values.tolist()
-    for actionIndex in actionList:
-        for row in range(len(csvData[actionIndex])):
-            emg_1_csv[actionIndex].append(csvData[actionIndex][row][0])
-            emg_2_csv[actionIndex].append(csvData[actionIndex][row][1])
-            emg_3_csv[actionIndex].append(csvData[actionIndex][row][2])
+    # folderPath_hyq = os.path.abspath('./src/Dataset/new/hyqData/testOnly')
+    # filePathList=[]
+    # filePathList.append(glob.glob(os.path.join(folderPath_hyq, "*.csv")))
 
-    # print(len(emg_1_csv['f']))
-    for i in range(0,3):
-        sig=[[],[],[]]
-        sig[0]=(emg_1_csv['f'][(i-1)*300+50:(i-1)*300+150])
-        sig[1]=(emg_2_csv['f'][(i-1)*300+50:(i-1)*300+150])
-        sig[2]=(emg_3_csv['f'][(i-1)*300+50:(i-1)*300+150])
-        print(getFeatureVector(sig))
+    # for filePathListIndex in filePathList:
+    #     csvData={'d': [] , 'u': [], 'l': [], 'r': [], 'f': []}
+    #     dl=[]
+    #     for f in filePathListIndex:
+    #         csvData[f[-5]] = pd.read_csv(f, header=None).values.tolist()
+    # for actionIndex in actionList:
+    #     for row in range(len(csvData[actionIndex])):
+    #         emg_1_csv[actionIndex].append(csvData[actionIndex][row][0])
+    #         emg_2_csv[actionIndex].append(csvData[actionIndex][row][1])
+    #         emg_3_csv[actionIndex].append(csvData[actionIndex][row][2])
+
+    # # print(len(emg_1_csv['f']))
+    # for i in range(0,3):
+    #     sig=[[],[],[]]
+    #     sig[0]=(emg_1_csv['f'][(i-1)*300+50:(i-1)*300+150])
+    #     sig[1]=(emg_2_csv['f'][(i-1)*300+50:(i-1)*300+150])
+    #     sig[2]=(emg_3_csv['f'][(i-1)*300+50:(i-1)*300+150])
+    #     print(getFeatureVector(sig))

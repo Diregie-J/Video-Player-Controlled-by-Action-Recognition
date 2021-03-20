@@ -104,7 +104,6 @@ def labelSwitch(arg):
     }
     return switcher[arg]
 
-
 def getNormInfo(matArray):
     meanArray = np.mean(matArray,0)
     stdArray = np.std(matArray,0)

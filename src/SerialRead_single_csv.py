@@ -30,6 +30,11 @@ baudrate = 19200
 ser = serial.Serial(port, baudrate)
 
 
+### 记录10次也即10个csv，每个csv 300行 -- 视情况修改
+recordTimes = 10
+recordLength = 300
+
+
 fileCount = 0
 filename = './src/'+'rw'+str(fileCount)+'.csv'
 f = open(filename, 'w')
@@ -41,10 +46,10 @@ ser.flushOutput()
 sleep(2)
 print('Start:')
 try:
-    for fileCount in range(10):
+    for fileCount in range(recordTimes):
         filename = './src/'+'rw'+str(fileCount)+'.csv'
         f = open(filename, 'w')
-        for recordCount in range(300):
+        for recordCount in range(recordLength):
             data = ser.readline()
             # bytes --> string
             data = data.decode()
@@ -64,10 +69,11 @@ try:
             f.write(str(data[2]))
             f.write('\n')
 
-        fileCount += 1
         print('休息2秒')
         sleep(2)
         print('Start:')
+        fileCount += 1
+        
     vis.visFile(filename)
 except KeyboardInterrupt:
     vis.visFile(filename)

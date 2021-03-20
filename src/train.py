@@ -9,6 +9,7 @@ from scipy import signal
 from scipy.fft import fft, ifft, fftfreq, fftshift
 import random
 from tools import getSmoothedList, labelSwitch, getNormInfo, standardise
+
 from featureExtraction import getFeatureVector
 from model import model_ann
 from keras.models import load_model
@@ -58,7 +59,6 @@ actionLength = min(csvLength)'''
 #     if temp<minimumValue:
 #         minimumValue=temp
 
-# 划窗
 
 isLog = True
 featureMatrix=[]
@@ -134,8 +134,10 @@ import tensorflow as tf
 tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 tf.random.set_seed(1234)
 
+
 # normalisation
 # featureMatrix = normalize(featureMatrix, axis = 1)
+
 
 state = np.random.get_state()
 np.random.shuffle(featureMatrix)
@@ -169,6 +171,7 @@ model.compile(loss='categorical_crossentropy',
 
 early_stop = EarlyStopping(monitor='val_accuracy', min_delta=0, patience=50, verbose=0, mode='max', baseline=None, restore_best_weights=True)
 history=model.fit(x_train, y_train_class, epochs=50, batch_size=100, verbose=1, validation_data=(x_validate, y_validate_class), callbacks=[early_stop])
+
 score = model.evaluate(x_test, y_test_class, verbose=0)
 print('Test loss:', score[0])
 print('Test accuracy:', score[1])
@@ -190,6 +193,5 @@ plt.xlabel('Epoch')
 plt.legend(['Train', 'Valid'], loc='upper left')
 plt.show()
 
-
-
 model.save('ann_model.h5')
+
