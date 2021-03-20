@@ -96,7 +96,7 @@ from keras.models import load_model
 import recognitionResults as rr
 
 # model = load_model('./src/ML_models/test2.h5')
-folderPath = os.path.abspath('./src/DataSet/newFromRealTime/hyqData/')
+folderPath = os.path.abspath('./DataSet/newFromRealTime/')
 filePathList=[]
 data=[]
 filePathList.append(glob.glob(os.path.join(folderPath, "*_log.csv")))
@@ -119,16 +119,16 @@ for filePathListIndex in filePathList:
                 sigSegment[0].append(data[i+j][0])
                 sigSegment[1].append(data[i+j][1])
                 sigSegment[2].append(data[i+j][2])
-            for k in range(0,len(scales)):
+            '''for k in range(0,len(scales)):
                 noiseSig[0] = addNoise(sigSegment[0],scales[k])
                 # pitchSig[0] = pitch(sigSegment[0],100,0.1)
                 noiseSig[1] = addNoise(sigSegment[0],scales[k])
                 # pitchSig[1] = pitch(sigSegment[0],100,0.1)
-                noiseSig[2] = addNoise(sigSegment[0],scales[k])
+                noiseSig[2] = addNoise(sigSegment[0],scales[k])'''
             # print(len(sigSegment[0]))
             # print(sigSegment[0][70:78])
             csvData[fileName[0:2]].append(sigSegment)
-            csvData[fileName[0:2]].append(noiseSig)
+            # csvData[fileName[0:2]].append(noiseSig)
             # sigSegment.clear()
 
 '''保证每个动作训练数据量一样'''
@@ -145,7 +145,7 @@ featureMatrix=[]
 labelMatrix=[]
 for index in csvData.keys():
     if isLog:
-        featureLog = './src/'+index+'_feature.csv'
+        featureLog = index+'_feature.csv'
         fl = open(featureLog, 'w')
     if True: #index !='rr':
         for i in range(actionLength):
@@ -180,7 +180,7 @@ tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 tf.random.set_seed(1234)
 
 # standardisation
-fileName_info = open('./src/normInfo.csv','w')
+fileName_info = open('normInfo.csv','w')
 meanValue, stdValue = getNormInfo(featureMatrix)
 featureMatrix = standardise(featureMatrix,meanValue,stdValue)
 

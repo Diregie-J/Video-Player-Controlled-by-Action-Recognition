@@ -18,23 +18,24 @@ k = 10
 n = 10
 winWidth = 300
 
-fname = './src/ML_Models/svm_model.pkl'
+fname = './ML_Models/svm_model.pkl'
 model = joblib.load(open(fname, 'rb'))
-# model = load_model('./src/ML_models/useable/ann_mav-ssc-wl-rms-mp.h5')
+# model = load_model('./ML_models/useable/ann_mav-ssc-wl-rms-mp.h5')
+# model = load_model('./ML_models/ann_model.h5')
 # model_cnn = load_model('./src/ML_models/cnn.h5')
 port = "COM9"
 baudrate = 19200
 ser = serial.Serial(port, baudrate)
 
 # real-time standardisation
-f = open('./src/normInfo.csv','r')
+f = open('./normInfo.csv','r')
 data = pd.read_csv(f, header=None).values.tolist()
 meanValue=data[0]
 stdValue=data[1]
 f.close()
 # record prediction being made
-featureLog = './src/'+'temp'+'_feature_log.csv'
-predictionLog = './src/'+'temp'+'_prediction_log.csv'
+featureLog = 'temp'+'_feature_log.csv'
+predictionLog = 'temp'+'_prediction_log.csv'
 fl = open(featureLog, 'w')
 pl = open(predictionLog, 'w')
 if __name__ == '__main__':
@@ -114,7 +115,9 @@ if __name__ == '__main__':
                 featureArray = tools.standardise(featureArray,meanValue,stdValue)
                 svmOutput = model.predict(featureArray)
                 print(rr.printOutput(svmOutput))
-
+                f=open('result.txt','w')
+                f.write(str(svmOutput))
+                f.close()
 
 
                 ### ANN:

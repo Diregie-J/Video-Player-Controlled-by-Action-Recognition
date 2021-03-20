@@ -25,7 +25,7 @@ def decide_filename(action: str) -> str:
 
 # change filename, port number, and baudrate if needed
 print(os.path.abspath('.'))
-filename = './src/Dataset/newFromRealTime/'+'rr3'+'.csv'
+filename = './Dataset/newFromRealTime/'+'rr3'+'.csv'
 port = "COM9"
 baudrate = 19200
 ser = serial.Serial(port, baudrate)

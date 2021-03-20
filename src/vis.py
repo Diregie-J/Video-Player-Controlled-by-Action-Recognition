@@ -60,9 +60,15 @@ if __name__ == "__main__":
     #         visFile(index+str(i)+'.csv')
 
 
-    visFile('./src/DataSet/newFromRealTime/rr1.csv',0)
-    visFile('./src/DataSet/newFromRealTime/rr2.csv',0)
-    visFile('./src/DataSet/newFromRealTime/rr3.csv',0)
+    # visFile('./DataSet/newFromRealTime/hyqData/rr1_log.csv',0)
+    # visFile('./DataSet/newFromRealTime/hyqData/rr2_log.csv',0)
+    # visFile('./DataSet/newFromRealTime/hyqData/rr3_log.csv',0)
+    visFile('DataSet/newFromRealTime/rr1.csv',0)
+    visFile('DataSet/newFromRealTime/rw2.csv',0)
+    # visFile('DataSet/newFromRealTime/rr3.csv',0)
+    # visFile('./DataSet/newFromRealTime/rw1_log.csv',0)
+    # visFile('./DataSet/newFromRealTime/rw2_log.csv',0)
+    # visFile('./DataSet/newFromRealTime/rw3_log.csv',0)
     # visFile('./src/DataSet/newFromRealTime/hyqData/lrTrial1_log.csv',0)
     # visFile('./src/DataSet/newFromRealTime/hyqData/lrTrial2_log.csv',0)
     # visFile('./src/DataSet/newFromRealTime/hyqData/lrTrial3_log.csv',0)

@@ -1,7 +1,11 @@
 import os
 import numpy as np
 
-jumpThreshold = 20
+
+'''jumpThreshold = 20
+valueLimit = 100'''
+
+jumpThreshold = 10
 valueLimit = 100
 
 #Calculate the value of a point preprocessed

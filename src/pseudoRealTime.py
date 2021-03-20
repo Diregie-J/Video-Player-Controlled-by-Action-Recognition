@@ -25,7 +25,7 @@ winWidth = 300
 # baudrate = 19200
 # ser = serial.Serial(port, baudrate)
 
-folderPath = os.path.abspath('./src/DataSet/newFromRealTime/hyqData')
+folderPath = os.path.abspath('./DataSet/newFromRealTime/')
 # folderPath = os.path.abspath('./src')
 print(folderPath)
 filePathList=[]
@@ -38,7 +38,7 @@ for fileName in filePathList[0]:
         continue
     # fileName = filePathList[0][0]
     # print(filePathList[0][0])
-    log = fileName[0:-4] + '_log.csv'
+    log = fileName[0:-4] + '_3_log.csv'
     f = open(log, 'w')
 
     if True: #__name__ == '__main__':

@@ -15,7 +15,7 @@ from keras.models import load_model
 import recognitionResults as rr
 
 # model = load_model('./src/ML_models/test2.h5')
-folderPath = os.path.abspath('./src/DataSet/newFromRealTime/hyqData/')
+folderPath = os.path.abspath('./DataSet/newFromRealTime/')
 filePathList=[]
 data=[]
 filePathList.append(glob.glob(os.path.join(folderPath, "*_log.csv")))
@@ -42,11 +42,11 @@ for filePathListIndex in filePathList:
             # sigSegment.clear()
 
 '''保证每个动作训练数据量一样'''
-csvLength=[]
+'''csvLength=[]
 for i in csvData.keys():
     csvLength.append(len(csvData[i]))
 print(min(csvLength))
-actionLength = min(csvLength)
+actionLength = min(csvLength)'''
 
 # len(csvData['lr']) -> 动作的次数: 20
 # len(csvData['lr'][2]) -> 3
@@ -67,9 +67,10 @@ featureVector=[]
 for index in csvData.keys():
     print(len(csvData[index]))
     if isLog:
-        featureLog = './src/'+index+'_feature.csv'
+        featureLog = './'+index+'_feature.csv'
         fl = open(featureLog, 'w')
     if True:
+        actionLength=len(csvData[index])
         for i in range(actionLength):
             featureVector = getFeatureVector(csvData[index][i])
             
@@ -99,7 +100,7 @@ featureMatrix = featureMatrix[:-1, :]
 labelMatrix = labelMatrix[:-1, :]
 
 # standardisation
-fileName_info = open('./src/normInfo.csv','w')
+fileName_info = open('normInfo.csv','w')
 meanValue, stdValue = getNormInfo(featureMatrix)
 featureMatrix = standardise(featureMatrix,meanValue,stdValue)
 
@@ -166,8 +167,8 @@ model.compile(loss='categorical_crossentropy',
               optimizer='adam',
               metrics=['accuracy'])
 
-early_stop = EarlyStopping(monitor='val_accuracy', min_delta=0, patience=100, verbose=0, mode='max', baseline=None, restore_best_weights=True)
-history=model.fit(x_train, y_train_class, epochs=100, batch_size=100, verbose=1, validation_data=(x_validate, y_validate_class), callbacks=[early_stop])
+early_stop = EarlyStopping(monitor='val_accuracy', min_delta=0, patience=50, verbose=0, mode='max', baseline=None, restore_best_weights=True)
+history=model.fit(x_train, y_train_class, epochs=50, batch_size=100, verbose=1, validation_data=(x_validate, y_validate_class), callbacks=[early_stop])
 score = model.evaluate(x_test, y_test_class, verbose=0)
 print('Test loss:', score[0])
 print('Test accuracy:', score[1])
