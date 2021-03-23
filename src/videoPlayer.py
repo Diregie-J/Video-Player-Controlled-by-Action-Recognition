@@ -233,6 +233,9 @@ class VideoPlayer(QWidget):
         self.statusBar.showMessage("Error: " + self.mediaPlayer.errorString())
 
 if __name__ == '__main__':
+    f = open("result.txt", "w")
+    f.write('no motion')
+    f.close()
     app = QApplication(sys.argv)
     player = VideoPlayer()
     player.setWindowTitle("Player")
